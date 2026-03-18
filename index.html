@@ -581,6 +581,8 @@
     <a href="#" onclick="showSection('zuordnung')" id="nav-zuordnung">Zuordnung</a>
     <a href="#" onclick="showSection('lueckentext')" id="nav-lueckentext">Lückentext</a>
     <a href="#" onclick="showSection('zusammenfassung')" id="nav-zusammenfassung">Zusammenfassung</a>
+    <a href="#" onclick="showSection('bonus')" id="nav-bonus" style="background:#f59e0b;color:white;border-radius:6px;">Bonus</a>
+    <a href="#" onclick="showSection('naechste')" id="nav-naechste">Ausblick</a>
 </nav>
 
 <!-- ============================================ -->
@@ -1373,6 +1375,242 @@
             <li>Optional: Gummibärchen-Experiment zuhause ausprobieren</li>
             <li>Merkt euch: hypotonisch, isotonisch, hypertonisch</li>
         </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-lg" style="background: #f59e0b; color: white;" onclick="showSection('bonus')">Bonus für Schnelle &rarr;</button>
+        <button class="btn btn-outline btn-lg" onclick="showSection('naechste')" style="margin-left: 0.5rem;">Ausblick: Nächste Themen &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: BONUS FÜR SCHNELLE -->
+<!-- ============================================ -->
+<div class="section" id="sec-bonus">
+    <h1 style="color: #b45309;">Bonus: Für die Schnellen</h1>
+    <p class="subtitle">Du bist schon fertig? Hier geht's in die Tiefe — Transferaufgaben und Knobelaufgaben</p>
+
+    <div class="card" style="border-left: 4px solid #f59e0b; background: linear-gradient(135deg, #fffbeb, #fef3c7);">
+        <h3 style="color: #92400e;">Wie funktioniert das hier?</h3>
+        <p>Diese Aufgaben gehen <strong>über den normalen Unterrichtsstoff hinaus</strong>. Sie verbinden das, was ihr gerade gelernt habt, mit echten biologischen und medizinischen Problemen. Probier's aus — wenn du nicht weiterkommst, ist das okay!</p>
+    </div>
+
+    <h2 style="color: #b45309;">Transfer-Aufgaben</h2>
+
+    <div class="card card-yellow">
+        <h3>Aufgabe 1: Die Dialyse-Maschine</h3>
+        <p>Bei der <strong>Hämodialyse</strong> (Blutwäsche) wird das Blut eines Patienten durch eine Maschine geleitet. Das Blut fließt an einer <strong>semipermeablen Membran</strong> vorbei, auf der anderen Seite fließt eine spezielle Dialyse-Lösung.</p>
+        <ol>
+            <li>Welches Prinzip wird hier genutzt? (Hinweis: Es ist nicht nur Osmose!)</li>
+            <li>Warum muss die Dialyse-Lösung eine <strong>bestimmte Zusammensetzung</strong> haben und darf nicht einfach Wasser sein?</li>
+            <li>Was würde passieren, wenn man die Membran durch eine <strong>nicht-semipermeable</strong> Membran ersetzen würde?</li>
+        </ol>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <ol>
+                    <li>Es werden <strong>Diffusion UND Osmose</strong> gleichzeitig genutzt: Harnstoff und Giftstoffe diffundieren aus dem Blut in die Dialyse-Lösung (Konzentrationsgefälle). Wasser bewegt sich durch Osmose.</li>
+                    <li>Die Lösung muss <strong>isotonisch</strong> bezüglich wichtiger Blutsalze sein (Na⁺, K⁺, Ca²⁺), damit diese nicht verloren gehen. Gleichzeitig enthält sie <strong>keine</strong> Giftstoffe — damit das Gefälle für deren Diffusion maximal ist. Reines Wasser würde die Blutzellen zum Platzen bringen (Hämolyse).</li>
+                    <li>Dann würden <strong>auch Blutzellen, Proteine und wichtige Moleküle</strong> austreten — das wäre tödlich. Die Semipermeabilität stellt sicher, dass nur kleine Abfallstoffe durchkommen.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-yellow">
+        <h3>Aufgabe 2: Warum schwitzen wir salzig?</h3>
+        <p>Schweiß enthält etwa <strong>0,1–0,4% NaCl</strong> — deutlich weniger als Blut (0,9%). Trotzdem schmeckt Schweiß salzig.</p>
+        <ol>
+            <li>Schweißdrüsen produzieren zunächst ein Sekret, das ähnlich wie Blutplasma zusammengesetzt ist. Im Ausführungsgang wird dann <strong>NaCl zurückresorbiert</strong>. Welchen Transportmechanismus braucht die Zelle dafür?</li>
+            <li>Warum ist das energetisch sinnvoll für den Körper?</li>
+            <li>Bei <strong>Mukoviszidose</strong> (Cystische Fibrose) ist ein Chlorid-Kanal defekt. Was passiert dann mit dem Schweiß?</li>
+        </ol>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <ol>
+                    <li><strong>Aktiven Transport!</strong> Na⁺ und Cl⁻ werden gegen das Konzentrationsgefälle aus dem Schweiß zurück in die Zellen/Blut gepumpt. Das kostet ATP.</li>
+                    <li>Salz ist ein <strong>wertvoller Elektrolyt</strong>. Würde der Körper bei jedem Schwitzen alles Salz verlieren, müsste er ständig Salz zuführen. Die Rückresorption spart Ressourcen.</li>
+                    <li>Bei Mukoviszidose funktioniert der <strong>CFTR-Chloridkanal</strong> nicht richtig → Cl⁻ (und damit auch Na⁺) können nicht zurückresorbiert werden → der Schweiß ist <strong>deutlich salziger</strong> als normal. Darum nutzen Ärzte den "Schweißtest" zur Diagnose!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-yellow">
+        <h3>Aufgabe 3: Das Aquaporin-Rätsel</h3>
+        <p>Wasser ist ein <strong>kleines, polares Molekül</strong>. Eigentlich sollte es kaum durch die hydrophobe Lipid-Doppelschicht kommen. Trotzdem bewegt sich Wasser relativ gut durch Biomembranen — und mit <strong>Aquaporinen</strong> sogar extrem schnell.</p>
+        <ol>
+            <li>Erkläre, warum Wasser <em>trotz</em> seiner Polarität <strong>langsam</strong> durch die Lipid-Doppelschicht diffundieren kann. (Tipp: Denke an die Größe!)</li>
+            <li>Aquaporine lassen Wasser durch, aber <strong>keine Protonen (H⁺)</strong>. Warum ist das biologisch wichtig?</li>
+            <li>Die Niere kann die Wasseraufnahme regulieren, indem sie <strong>mehr oder weniger Aquaporine</strong> in die Zellmembran einbaut. Welches Hormon steuert das?</li>
+        </ol>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <ol>
+                    <li>Wasser ist zwar polar, aber <strong>extrem klein</strong> (nur 3 Atome). Es kann sich durch die kurzzeitig entstehenden Lücken zwischen den Phospholipiden "quetschen". Das passiert aber langsam — Aquaporine beschleunigen das um Faktor 100–1000.</li>
+                    <li>Protonen (H⁺) sind entscheidend für den <strong>pH-Wert</strong> und die <strong>ATP-Synthese</strong> (Protonengradient in Mitochondrien). Wenn Aquaporine H⁺ durchlassen würden, würde der Protonengradient zusammenbrechen und die Zelle könnte keine Energie mehr gewinnen!</li>
+                    <li><strong>ADH (Antidiuretisches Hormon / Vasopressin)</strong>. Bei Wassermangel schüttet die Hypophyse ADH aus → mehr Aquaporine → mehr Wasser wird rückresorbiert → konzentrierterer Urin.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color: #b45309;">Knobelecke</h2>
+
+    <div class="thought-experiment" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b;">
+        <h3 style="color: #92400e;">Knobelfrage 1: Das osmotische Kraftwerk</h3>
+        <p>In Norwegen gibt es ein experimentelles <strong>Osmose-Kraftwerk</strong>. Süßwasser und Salzwasser werden durch eine semipermeable Membran getrennt.</p>
+        <p><strong>Erkläre:</strong> Wie kann man aus Osmose Strom gewinnen? Wo wäre der ideale Standort für so ein Kraftwerk?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                Durch Osmose strömt Süßwasser zur Salzwasser-Seite → der <strong>Druck auf der Salzwasser-Seite steigt</strong> (osmotischer Druck). Dieser Druck treibt eine <strong>Turbine</strong> an → Strom! Idealer Standort: <strong>Flussmündungen</strong> (wo Süßwasser auf Meer trifft). Der osmotische Druck zwischen Süß- und Meerwasser entspricht einer Wassersäule von ca. <strong>27 Metern</strong> — das ist wie ein kleiner Staudamm!
+            </div>
+        </div>
+    </div>
+
+    <div class="thought-experiment" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b;">
+        <h3 style="color: #92400e;">Knobelfrage 2: Warum frieren Frösche nicht?</h3>
+        <p>Manche Froscharten überleben den Winter, obwohl ihr Körper <strong>teilweise einfriert</strong>. Sie produzieren im Herbst große Mengen <strong>Glucose</strong>, die sie in ihren Zellen speichern.</p>
+        <p><strong>Erkläre mit deinem Wissen über Osmose:</strong> Warum schützt die Glucose die Zellen vor dem Erfrieren?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                Die hohe Glucose-Konzentration in den Zellen wirkt wie ein <strong>Frostschutzmittel</strong>:
+                <ul>
+                    <li>Gelöste Stoffe <strong>senken den Gefrierpunkt</strong> (kolligative Eigenschaft)</li>
+                    <li>Die Zellen werden <strong>hypertonisch</strong> → Wasser strömt teilweise aus den Zellen RAUS in die Zwischenräume</li>
+                    <li>Das Eis bildet sich also <strong>zwischen</strong> den Zellen, nicht <strong>in</strong> ihnen</li>
+                    <li>Eiskristalle in der Zelle wären tödlich — sie würden die Membran von innen <strong>zerreißen</strong></li>
+                </ul>
+                So überlebt der Frosch, obwohl bis zu 65% seines Körperwassers gefriert!
+            </div>
+        </div>
+    </div>
+
+    <div class="thought-experiment" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #f59e0b;">
+        <h3 style="color: #92400e;">Knobelfrage 3: Gift durch die Membran</h3>
+        <p>Manche Gifte (z.B. Tetrodotoxin aus dem Kugelfisch) wirken, indem sie <strong>Natriumkanäle blockieren</strong>. Andere Gifte (z.B. bestimmte Insektizide) machen <strong>Löcher</strong> in die Membran.</p>
+        <p><strong>Vergleiche:</strong> Welches Gift wäre gefährlicher und warum? Denke an die Konsequenzen für die Zelle.</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <strong>Löcher in der Membran</strong> wären katastrophaler:
+                <ul>
+                    <li>Blockierte Na⁺-Kanäle → Nerven können keine Signale mehr senden → Lähmung, aber die Zellstruktur bleibt intakt</li>
+                    <li>Löcher in der Membran → <strong>kompletter Verlust der Selektivität</strong>: Ionen, Proteine, alles kann unkontrolliert fließen → Zusammenbruch aller Konzentrationsgradienten → Zelle stirbt</li>
+                    <li>Die Membran ist die <strong>Grundvoraussetzung für Leben</strong> — ohne Barriere keine geordnete Chemie</li>
+                </ul>
+                Beide Gifte sind gefährlich, aber der Verlust der Membranintegrität ist der fundamentalere Schaden.
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color: #b45309;">Vertiefungs-Challenge</h2>
+    <div class="card" style="border: 2px solid #f59e0b;">
+        <h3>Erstelle dein eigenes Erklär-Diagramm!</h3>
+        <p>Zeichne (auf Papier oder digital) den Weg eines <strong>Glucose-Moleküls</strong> vom Darm ins Blut und dann in eine Muskelzelle. Beschrifte:</p>
+        <ol>
+            <li>Welche <strong>Membranen</strong> muss es passieren?</li>
+            <li>Welcher <strong>Transportmechanismus</strong> wird an jeder Membran genutzt? (Passiv? Aktiv? Erleichtert?)</li>
+            <li>Wo braucht die Zelle <strong>ATP</strong> und wo nicht?</li>
+        </ol>
+        <p style="font-style: italic; color: var(--muted);">Tipp: Im Darm gibt es einen Na⁺-gekoppelten Glucose-Transporter (SGLT1) — das ist ein sekundär aktiver Transport!</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-primary btn-lg" onclick="showSection('naechste')">Weiter: Ausblick &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: AUSBLICK / NÄCHSTE THEMEN -->
+<!-- ============================================ -->
+<div class="section" id="sec-naechste">
+    <h1>Ausblick: Wie geht's weiter?</h1>
+    <p class="subtitle">Diese Themen kommen als nächstes — und sie bauen direkt auf dem auf, was ihr heute gelernt habt</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+
+        <div class="card card-green" style="position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0.75rem; right: 0.75rem; background: var(--accent); color: white; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700;">NÄCHSTE STUNDE</div>
+            <h3 style="margin-top: 0;">Enzyme</h3>
+            <p><strong>Die Werkzeuge der Zelle</strong></p>
+            <ul>
+                <li>Enzyme sind <strong>Proteine</strong> — viele sitzen in der Biomembran!</li>
+                <li>Schlüssel-Schloss-Prinzip & Substratspezifität</li>
+                <li>Wie Temperatur und pH die Enzymaktivität beeinflussen</li>
+                <li>Enzymhemmung (kompetitiv vs. nicht-kompetitiv)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--accent); font-weight: 600;">Verbindung zu heute: Carrier-Proteine in der Membran sind Enzyme! Sie verändern ihre Form, um Stoffe zu transportieren.</p>
+        </div>
+
+        <div class="card card-purple">
+            <h3 style="margin-top: 0;">Zellatmung</h3>
+            <p><strong>Wie die Zelle Energie gewinnt</strong></p>
+            <ul>
+                <li>Glucose + O₂ → CO₂ + H₂O + <strong>ATP</strong></li>
+                <li>Glykolyse → Citratzyklus → Atmungskette</li>
+                <li>Die Atmungskette sitzt in der <strong>inneren Mitochondrienmembran</strong></li>
+                <li>Protonengradient über die Membran treibt die ATP-Synthase</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Verbindung zu heute: Der Protonengradient ist wie Osmose — H⁺-Ionen fließen durch einen Kanal (ATP-Synthase) und erzeugen dabei Energie!</p>
+        </div>
+
+        <div class="card card-blue">
+            <h3 style="margin-top: 0;">Fotosynthese</h3>
+            <p><strong>Wie Pflanzen Energie einfangen</strong></p>
+            <ul>
+                <li>Lichtreaktion in der <strong>Thylakoidmembran</strong></li>
+                <li>Dunkelreaktion (Calvin-Zyklus) im Stroma</li>
+                <li>CO₂ + H₂O + Licht → Glucose + O₂</li>
+                <li>Auch hier: Protonengradient über eine Membran!</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">Verbindung zu heute: CO₂ und O₂ gelangen durch Diffusion in die Zelle. Die Thylakoidmembran funktioniert ähnlich wie die Zellmembran.</p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #f59e0b;">
+            <h3 style="margin-top: 0;">Zellkommunikation</h3>
+            <p><strong>Wie Zellen miteinander "reden"</strong></p>
+            <ul>
+                <li>Hormone binden an <strong>Rezeptoren</strong> auf der Membran</li>
+                <li>Signaltransduktion: Signal von außen → Reaktion innen</li>
+                <li>Neurotransmitter an Synapsen</li>
+                <li>Warum die Glykokalix so wichtig ist</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: #b45309; font-weight: 600;">Verbindung zu heute: Die Membranproteine (Rezeptoren, Kanäle) sind die Schlüsselakteure — ohne Biomembran keine Kommunikation!</p>
+        </div>
+
+    </div>
+
+    <h2>Der rote Faden</h2>
+    <div class="highlight-box">
+        <p style="font-size: 1.1rem; text-align: center; margin: 0;">
+            <strong>Biomembran</strong> → kontrolliert den <strong>Stofftransport</strong> (Diffusion, Osmose, aktiv)<br>
+            → ermöglicht <strong>Enzyme</strong> an der richtigen Stelle<br>
+            → treibt die <strong>Zellatmung</strong> (Protonengradient)<br>
+            → ermöglicht <strong>Fotosynthese</strong> (Thylakoidmembran)<br>
+            → steuert die <strong>Zellkommunikation</strong> (Rezeptoren)<br><br>
+            <em style="color: var(--secondary);">Die Biomembran ist das Fundament fast aller Zellfunktionen!</em>
+        </p>
+    </div>
+
+    <h2>Vorbereitungsfragen für die nächste Stunde</h2>
+    <div class="card card-green">
+        <p>Überlegt euch bis zur nächsten Stunde:</p>
+        <ol>
+            <li><strong>Enzyme:</strong> Warum funktioniert Waschmittel bei 30°C anders als bei 60°C? Was hat das mit Enzymen zu tun?</li>
+            <li><strong>Zellatmung:</strong> Warum atmen wir ein (O₂) und aus (CO₂)? Was passiert mit dem Sauerstoff in der Zelle?</li>
+            <li><strong>Allgemein:</strong> Welche Berufe arbeiten täglich mit Wissen über Osmose und Membranen? (Denkt an Medizin, Lebensmittel, Technik...)</li>
+        </ol>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #1e293b, #334155); color: white; text-align: center; padding: 2rem;">
+        <h2 style="color: #93c5fd; border: none; margin-top: 0;">Gut gemacht!</h2>
+        <p style="font-size: 1.1rem; opacity: 0.9;">Ihr habt heute die Grundlagen von Diffusion, Osmose und Biomembran gelernt — das sind Konzepte, die in der <strong>gesamten Biologie</strong> immer wieder vorkommen.</p>
+        <p style="font-size: 1rem; opacity: 0.7;">Diese Website bleibt online — ihr könnt jederzeit nochmal nachschauen und üben!</p>
     </div>
 </div>
 
