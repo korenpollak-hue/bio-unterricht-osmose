@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osmose, Diffusion & Biomembran — E-Phase Bio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #059669;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+        .nav-brand {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+            white-space: nowrap;
+            margin-right: 1rem;
+        }
+        .nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem 3rem;
+        }
+        .section.active { display: block; }
+
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary); }
+        h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: var(--secondary); border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.2rem; margin: 1.5rem 0 0.75rem; color: var(--text); }
+        p { margin-bottom: 1rem; }
+        .subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .card-blue { border-left: 4px solid var(--primary); }
+        .card-purple { border-left: 4px solid var(--secondary); }
+        .card-green { border-left: 4px solid var(--accent); }
+        .card-yellow { border-left: 4px solid var(--warning); }
+
+        /* Key Terms */
+        .key-term {
+            display: inline-block;
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .key-term.green { background: #d1fae5; color: var(--accent); }
+        .key-term.purple { background: #ede9fe; color: var(--secondary); }
+
+        /* Animation Container */
+        .animation-container {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+        }
+        .animation-container canvas {
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+        .animation-label {
+            color: white;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            opacity: 0.8;
+        }
+        .animation-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-secondary:hover { background: #6d28d9; }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-accent:hover { background: #047857; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+        .btn-lg { padding: 0.8rem 2rem; font-size: 1.1rem; }
+
+        /* Quiz */
+        .quiz-container {
+            background: var(--card);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .quiz-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .quiz-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+            border-radius: 3px;
+        }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 0.6rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { border-color: var(--primary); background: #f0f7ff; }
+        .quiz-option.correct { border-color: var(--success); background: #dcfce7; }
+        .quiz-option.wrong { border-color: var(--danger); background: #fee2e2; }
+        .quiz-option.disabled { pointer-events: none; }
+        .quiz-feedback {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+            font-weight: 500;
+        }
+        .quiz-feedback.correct { display: block; background: #dcfce7; color: #166534; }
+        .quiz-feedback.wrong { display: block; background: #fee2e2; color: #991b1b; }
+
+        /* Team Quiz */
+        .team-setup {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .team-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        .team-a { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+        .team-b { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+        .team-c { background: linear-gradient(135deg, #059669, #10b981); }
+        .team-score { font-size: 2.5rem; display: block; margin: 0.5rem 0; }
+        .team-name { font-size: 0.9rem; opacity: 0.9; }
+
+        /* Experiment */
+        .experiment-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .experiment-box h3 {
+            color: #92400e;
+            margin-top: 0;
+        }
+
+        /* Video */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .video-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .video-card iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+        .video-card .video-info {
+            padding: 0.75rem 1rem;
+        }
+        .video-card .video-info h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .video-card .video-info p { font-size: 0.8rem; color: var(--muted); margin: 0; }
+
+        /* Summary Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--text);
+        }
+        tr:hover { background: #f8fafc; }
+
+        /* Thought Experiment */
+        .thought-experiment {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .thought-experiment h3 { color: #5b21b6; margin-top: 0; }
+
+        /* Quick Check */
+        .quick-check {
+            background: #ecfdf5;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .quick-check h3 { color: #065f46; margin-top: 0; }
+
+        /* Spoiler / Reveal */
+        .reveal-answer {
+            background: var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .reveal-answer .answer-text { display: none; margin-top: 0.5rem; }
+        .reveal-answer.open .answer-text { display: block; }
+        .reveal-answer.open { background: #dcfce7; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { padding: 0.5rem 1rem; }
+            h1 { font-size: 1.5rem; }
+            .section { padding: 4.5rem 1rem 2rem; }
+            .team-card { min-width: 140px; }
+        }
+
+        /* Print */
+        @media print {
+            .nav { display: none; }
+            .section { display: block !important; padding: 1rem; page-break-inside: avoid; }
+            .animation-container { display: none; }
+        }
+
+        /* Gap Input */
+        .gap-input {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background: transparent;
+            font-size: 0.95rem;
+            padding: 0.2rem 0.4rem;
+            font-family: inherit;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .gap-input:focus { outline: none; border-bottom-color: var(--secondary); background: #f0f7ff; }
+        .gap-input.correct { border-bottom-color: var(--success); background: #dcfce7; }
+        .gap-input.wrong { border-bottom-color: var(--danger); background: #fee2e2; }
+
+        /* Drag Items */
+        .drag-item {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: grab;
+            font-size: 0.85rem;
+            font-weight: 600;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .drag-item:active { cursor: grabbing; transform: scale(1.05); }
+        .drag-item.placed { opacity: 0.4; pointer-events: none; }
+        .drag-item.correct-item { border-color: var(--success); background: #dcfce7; }
+        .drag-item.wrong-item { border-color: var(--danger); background: #fee2e2; }
+        .drop-zone { transition: all 0.2s; }
+        .drop-zone.drag-over { background: #dbeafe !important; border-style: solid !important; }
+
+        /* Memory Game */
+        .memory-card {
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0.5rem;
+            user-select: none;
+        }
+        .memory-card.face-down { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .memory-card.face-up { background: white; border: 2px solid var(--primary); color: var(--text); }
+        .memory-card.matched { background: #dcfce7; border: 2px solid var(--success); color: #166534; pointer-events: none; }
+
+        /* True/False */
+        .tf-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            background: white;
+        }
+        .tf-item p { margin: 0; flex: 1; }
+        .tf-btn { padding: 0.4rem 1rem; border-radius: 6px; border: 2px solid var(--border); background: white; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+        .tf-btn.selected-true { background: #dcfce7; border-color: var(--success); }
+        .tf-btn.selected-false { background: #fee2e2; border-color: var(--danger); }
+        .tf-item.correct-tf { background: #dcfce7; }
+        .tf-item.wrong-tf { background: #fee2e2; }
+
+        /* Membrane Animation */
+        .membrane-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 1.5rem 0;
+            padding: 1rem;
+        }
+        .membrane-side {
+            flex: 1;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 12px 0 0 12px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .membrane-side.right { border-radius: 0 12px 12px 0; }
+        .membrane-wall {
+            width: 8px;
+            background: repeating-linear-gradient(
+                to bottom,
+                var(--secondary) 0px,
+                var(--secondary) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            min-height: 200px;
+            position: relative;
+        }
+        .particle {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin: 3px;
+        }
+        .particle.water { background: #3b82f6; }
+        .particle.solute { background: #ef4444; }
+        .particle.small { width: 10px; height: 10px; }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: var(--border);
+            color: var(--muted);
+        }
+        .step.active { background: var(--primary); color: white; }
+        .step.done { background: var(--success); color: white; }
+        .step-line { flex: 1; height: 2px; background: var(--border); }
+
+        /* Floating particles animation */
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-8px) translateX(5px); }
+            50% { transform: translateY(3px) translateX(-3px); }
+            75% { transform: translateY(-5px) translateX(7px); }
+        }
+        .float { animation: float-particle 3s ease-in-out infinite; }
+        .float-delay-1 { animation-delay: 0.5s; }
+        .float-delay-2 { animation-delay: 1s; }
+        .float-delay-3 { animation-delay: 1.5s; }
+
+        /* Diffusion Arrow Animation */
+        @keyframes diffuse-right {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(60px); opacity: 0; }
+        }
+        @keyframes diffuse-left {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-60px); opacity: 0; }
+        }
+
+        /* Countdown Timer */
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+        .timer-display.warning { color: var(--warning); }
+        .timer-display.danger { color: var(--danger); }
+
+        /* Tabs within section */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .emoji-icon { font-size: 1.3rem; margin-right: 0.5rem; }
+
+        /* List styling */
+        ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+        li { margin-bottom: 0.4rem; }
+
+        /* Highlight box */
+        .highlight-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid #93c5fd;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+    <span class="nav-brand">Bio E-Phase</span>
+    <a href="#" onclick="showSection('start')" class="active" id="nav-start">Start</a>
+    <a href="#" onclick="showSection('diffusion')" id="nav-diffusion">Diffusion</a>
+    <a href="#" onclick="showSection('osmose')" id="nav-osmose">Osmose</a>
+    <a href="#" onclick="showSection('membran')" id="nav-membran">Biomembran</a>
+    <a href="#" onclick="showSection('experimente')" id="nav-experimente">Experimente</a>
+    <a href="#" onclick="showSection('videos')" id="nav-videos">Videos</a>
+    <a href="#" onclick="showSection('quiz')" id="nav-quiz">Quiz</a>
+    <a href="#" onclick="showSection('teamquiz')" id="nav-teamquiz">Team-Quiz</a>
+    <a href="#" onclick="showSection('zuordnung')" id="nav-zuordnung">Zuordnung</a>
+    <a href="#" onclick="showSection('lueckentext')" id="nav-lueckentext">Lückentext</a>
+    <a href="#" onclick="showSection('zusammenfassung')" id="nav-zusammenfassung">Zusammenfassung</a>
+</nav>
+
+<!-- ============================================ -->
+<!-- SECTION: START -->
+<!-- ============================================ -->
+<div class="section active" id="sec-start">
+    <h1>Osmose, Diffusion & Biomembran</h1>
+    <p class="subtitle">Wie bewegen sich Teilchen in und um Zellen? — Interaktive Unterrichtseinheit</p>
+
+    <div class="card card-blue">
+        <h3>Was lernen wir heute?</h3>
+        <ol>
+            <li><strong>Diffusion</strong> — Warum verteilt sich Tinte im Wasser?</li>
+            <li><strong>Osmose</strong> — Warum werden Kirschen im Regen prall?</li>
+            <li><strong>Biomembran</strong> — Wie kontrolliert eine Zelle, was rein- und rausgeht?</li>
+        </ol>
+    </div>
+
+    <div class="card card-green">
+        <h3>Einstiegsfrage — Diskutiert kurz!</h3>
+        <p style="font-size: 1.15rem; font-weight: 600;">Wenn du einen Teebeutel in heißes Wasser legst — warum wird das ganze Wasser braun, obwohl sich der Teebeutel nicht bewegt?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">
+                <strong>Diffusion!</strong> Die Farbstoff-Teilchen aus dem Teebeutel bewegen sich durch die Brown'sche Molekularbewegung vom Ort hoher Konzentration (Teebeutel) zum Ort niedriger Konzentration (restliches Wasser) — bis ein Gleichgewicht entsteht.
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-primary btn-lg" onclick="showSection('diffusion')">Los geht's! &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: DIFFUSION -->
+<!-- ============================================ -->
+<div class="section" id="sec-diffusion">
+    <h1>1. Diffusion</h1>
+    <p class="subtitle">Die selbstständige Durchmischung von Teilchen</p>
+
+    <div class="card card-blue">
+        <h3><span class="emoji-icon">&#128218;</span>Definition</h3>
+        <p><span class="key-term">Diffusion</span> ist der <strong>passive Transport</strong> von Teilchen vom Ort <strong>höherer Konzentration</strong> zum Ort <strong>niedrigerer Konzentration</strong> — entlang des Konzentrationsgefälles.</p>
+        <p>Wichtig: Es wird <strong>keine Energie</strong> benötigt! Die Teilchen bewegen sich durch ihre natürliche <span class="key-term green">Brown'sche Molekularbewegung</span> (thermische Eigenbewegung).</p>
+    </div>
+
+    <!-- DIFFUSION ANIMATION -->
+    <div class="animation-container" id="diffusion-anim">
+        <canvas id="diffusionCanvas" width="850" height="300"></canvas>
+        <p class="animation-label">Klicke "Start" um Diffusion zu beobachten — Teilchen wandern vom konzentrierten Bereich zum leeren Bereich</p>
+        <div class="animation-controls">
+            <button class="btn btn-primary btn-sm" onclick="startDiffusion()">&#9654; Start</button>
+            <button class="btn btn-outline btn-sm" onclick="resetDiffusion()">&#8634; Reset</button>
+        </div>
+    </div>
+
+    <h2>Einflussfaktoren auf die Diffusionsgeschwindigkeit</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="card card-purple">
+            <h3>&#127777; Temperatur</h3>
+            <p>Höhere Temperatur = schnellere Teilchenbewegung = <strong>schnellere Diffusion</strong></p>
+        </div>
+        <div class="card card-blue">
+            <h3>&#9878; Teilchengröße</h3>
+            <p>Kleinere Teilchen diffundieren <strong>schneller</strong> als große</p>
+        </div>
+        <div class="card card-green">
+            <h3>&#8693; Konzentrationsgefälle</h3>
+            <p>Je größer der Unterschied, desto <strong>schneller</strong> die Diffusion</p>
+        </div>
+    </div>
+
+    <h2>Alltagsbeispiele</h2>
+    <ul>
+        <li><strong>Parfüm im Raum</strong> — Du riechst es nach Sekunden, obwohl die Flasche weit weg ist</li>
+        <li><strong>Tinte im Wasser</strong> — Breitet sich ohne Rühren langsam aus</li>
+        <li><strong>Gasaustausch in der Lunge</strong> — O₂ diffundiert ins Blut, CO₂ diffundiert raus</li>
+        <li><strong>Zucker löst sich im Tee</strong> — Zucker-Moleküle verteilen sich gleichmäßig</li>
+    </ul>
+
+    <div class="quick-check">
+        <h3>&#10003; Quick Check — Diffusion</h3>
+        <p><strong>Frage 1:</strong> In welche Richtung bewegen sich die Teilchen bei der Diffusion?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Vom Ort <strong>höherer Konzentration</strong> zum Ort <strong>niedrigerer Konzentration</strong> (entlang des Konzentrationsgefälles).</div>
+        </div>
+        <br>
+        <p><strong>Frage 2:</strong> Wird bei der Diffusion Energie (ATP) verbraucht?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text"><strong>Nein!</strong> Diffusion ist ein passiver Transport. Die Bewegung kommt allein aus der thermischen Eigenbewegung der Teilchen (Brown'sche Molekularbewegung).</div>
+        </div>
+        <br>
+        <p><strong>Frage 3:</strong> Warum diffundiert Tinte in heißem Wasser schneller als in kaltem?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Bei höherer Temperatur haben die Teilchen <strong>mehr kinetische Energie</strong> — sie bewegen sich schneller und stoßen häufiger zusammen, was die Durchmischung beschleunigt.</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-secondary btn-lg" onclick="showSection('osmose')">Weiter: Osmose &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: OSMOSE -->
+<!-- ============================================ -->
+<div class="section" id="sec-osmose">
+    <h1>2. Osmose</h1>
+    <p class="subtitle">Diffusion von Wasser durch eine semipermeable Membran</p>
+
+    <div class="card card-purple">
+        <h3><span class="emoji-icon">&#128218;</span>Definition</h3>
+        <p><span class="key-term purple">Osmose</span> ist die <strong>Diffusion von Wasser</strong> (Lösungsmittel) durch eine <span class="key-term">semipermeable Membran</span> — von der Seite mit <strong>niedrigerer</strong> Teilchenkonzentration (= höherer Wasserkonzentration) zur Seite mit <strong>höherer</strong> Teilchenkonzentration (= niedrigerer Wasserkonzentration).</p>
+    </div>
+
+    <div class="highlight-box">
+        <h3>Schlüsselbegriff: Semipermeable Membran</h3>
+        <p>Eine <strong>halbdurchlässige</strong> Membran lässt <span class="particle water" style="display:inline-block; width:12px; height:12px; vertical-align:middle;"></span> <strong>Wasser</strong> (kleine Moleküle) durch, aber <strong>nicht</strong> <span class="particle solute" style="display:inline-block; width:12px; height:12px; vertical-align:middle;"></span> <strong>gelöste Stoffe</strong> (große Moleküle wie Zucker).</p>
+    </div>
+
+    <!-- OSMOSE VISUAL -->
+    <div class="membrane-visual" style="background: #f1f5f9; border-radius: 12px;">
+        <div class="membrane-side" style="background: #dbeafe;">
+            <p style="font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">Hypotonisch</p>
+            <p style="font-size: 0.8rem; color: var(--muted);">Wenig gelöste Teilchen<br>= Viel freies Wasser</p>
+            <div style="margin: 0.75rem 0;">
+                <span class="particle water float"></span>
+                <span class="particle water float float-delay-1"></span>
+                <span class="particle water float float-delay-2"></span>
+                <span class="particle water float float-delay-3"></span>
+                <span class="particle water float"></span>
+                <span class="particle water float float-delay-2"></span>
+                <span class="particle water float float-delay-1"></span>
+                <span class="particle water float float-delay-3"></span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--muted);">&#128309; = Wasser</span>
+        </div>
+        <div class="membrane-wall">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); white-space: nowrap; font-size: 0.7rem; color: var(--secondary); font-weight: 600; letter-spacing: 1px;">MEMBRAN</div>
+        </div>
+        <div class="membrane-side right" style="background: #fce7f3;">
+            <p style="font-weight: 700; color: #be185d; margin-bottom: 0.5rem;">Hypertonisch</p>
+            <p style="font-size: 0.8rem; color: var(--muted);">Viele gelöste Teilchen<br>= Wenig freies Wasser</p>
+            <div style="margin: 0.75rem 0;">
+                <span class="particle solute float"></span>
+                <span class="particle water float float-delay-1"></span>
+                <span class="particle solute float float-delay-2"></span>
+                <span class="particle solute float float-delay-3"></span>
+                <span class="particle water float"></span>
+                <span class="particle solute float float-delay-1"></span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--muted);">&#128308; = Gelöster Stoff &nbsp; &#128309; = Wasser</span>
+        </div>
+    </div>
+    <p style="text-align: center; font-weight: 600; color: var(--primary); font-size: 1.1rem;">&#10145; Wasser wandert von links (hypotonisch) nach rechts (hypertonisch)</p>
+
+    <h2>Die drei Zustände</h2>
+    <table>
+        <tr>
+            <th>Zustand</th>
+            <th>Bedeutung</th>
+            <th>Was passiert mit der Zelle?</th>
+        </tr>
+        <tr>
+            <td><span class="key-term">Hypotonisch</span></td>
+            <td>Außen weniger Teilchen als innen</td>
+            <td>Wasser strömt <strong>in die Zelle</strong> → Zelle quillt auf (Plasmoptyse / Lyse)</td>
+        </tr>
+        <tr>
+            <td><span class="key-term purple">Isotonisch</span></td>
+            <td>Gleiche Konzentration innen und außen</td>
+            <td>Kein Netto-Wasserfluss → Zelle bleibt <strong>normal</strong></td>
+        </tr>
+        <tr>
+            <td><span class="key-term green">Hypertonisch</span></td>
+            <td>Außen mehr Teilchen als innen</td>
+            <td>Wasser strömt <strong>aus der Zelle</strong> → Zelle schrumpft (Plasmolyse)</td>
+        </tr>
+    </table>
+
+    <h2>Osmose bei Pflanzenzellen vs. Tierzellen</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="card card-green">
+            <h3>&#127793; Pflanzenzelle</h3>
+            <ul>
+                <li>Hat eine <strong>Zellwand</strong> (Stütze!)</li>
+                <li>In hypotonischer Lösung: Zelle wird <strong>turgeszent</strong> (prall) — die Zellwand verhindert das Platzen</li>
+                <li>In hypertonischer Lösung: <strong>Plasmolyse</strong> — Zellmembran löst sich von der Zellwand</li>
+                <li><strong>Turgor</strong> = Innendruck gegen die Zellwand → hält die Pflanze stabil!</li>
+            </ul>
+        </div>
+        <div class="card card-blue">
+            <h3>&#129516; Tierzelle</h3>
+            <ul>
+                <li>Hat <strong>keine Zellwand</strong></li>
+                <li>In hypotonischer Lösung: Zelle <strong>platzt</strong> (Lyse / Zytholyse)</li>
+                <li>In hypertonischer Lösung: Zelle <strong>schrumpft</strong> (Krenation)</li>
+                <li>Braucht <strong>isotonische</strong> Umgebung um stabil zu bleiben (z.B. Blut: 0,9% NaCl)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Alltagsbeispiele für Osmose</h2>
+    <ul>
+        <li><strong>Kirschen platzen im Regen</strong> — Regenwasser (hypotonisch) strömt durch Osmose in die Kirsche</li>
+        <li><strong>Salat wird welk mit Dressing</strong> — Salz entzieht dem Salat Wasser (hypertonisch)</li>
+        <li><strong>Finger schrumpeln im Badewasser</strong> — Wasser dringt in die Hautzellen ein</li>
+        <li><strong>Infusion im Krankenhaus</strong> — Muss isotonisch sein (0,9% NaCl), sonst platzen/schrumpfen die Blutzellen</li>
+        <li><strong>Salzwasser konserviert Lebensmittel</strong> — Bakterien verlieren Wasser und sterben</li>
+    </ul>
+
+    <div class="quick-check">
+        <h3>&#10003; Quick Check — Osmose</h3>
+        <p><strong>Frage 1:</strong> Was ist der Unterschied zwischen Diffusion und Osmose?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Osmose ist ein <strong>Spezialfall</strong> der Diffusion: Es geht nur um die Wanderung von <strong>Wasser</strong> durch eine <strong>semipermeable Membran</strong>. Diffusion allgemein kann jedes Teilchen betreffen und braucht keine Membran.</div>
+        </div>
+        <br>
+        <p><strong>Frage 2:</strong> Was passiert mit einer roten Blutzelle in destilliertem Wasser?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Destilliertes Wasser ist <strong>hypotonisch</strong>. Wasser strömt durch Osmose <strong>in die Zelle</strong>. Da Tierzellen keine Zellwand haben, <strong>platzt die Zelle</strong> (Hämolyse).</div>
+        </div>
+        <br>
+        <p><strong>Frage 3:</strong> Warum welkt eine Pflanze, wenn man sie mit zu viel Dünger gießt?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Zu viel Dünger macht die Bodenlösung <strong>hypertonisch</strong>. Wasser fließt durch Osmose <strong>aus den Wurzelzellen heraus</strong> in den Boden → Plasmolyse → die Pflanze welkt.</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-accent btn-lg" onclick="showSection('membran')">Weiter: Biomembran &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: BIOMEMBRAN -->
+<!-- ============================================ -->
+<div class="section" id="sec-membran">
+    <h1>3. Biomembran</h1>
+    <p class="subtitle">Das Fluid-Mosaik-Modell — Die Grenze jeder Zelle</p>
+
+    <div class="card card-green">
+        <h3><span class="emoji-icon">&#128218;</span>Definition</h3>
+        <p>Die <span class="key-term green">Biomembran</span> ist eine <strong>Doppelschicht aus Phospholipiden</strong>, in die verschiedene Proteine eingelagert sind. Sie umgibt jede Zelle und viele Zellorganellen und kontrolliert, was rein und raus darf.</p>
+    </div>
+
+    <h2>Aufbau: Fluid-Mosaik-Modell (Singer & Nicolson, 1972)</h2>
+
+    <!-- Membrane Structure Visual -->
+    <div class="animation-container" style="min-height: 350px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);">
+        <canvas id="membraneCanvas" width="850" height="340"></canvas>
+        <p class="animation-label">Fluid-Mosaik-Modell — Die Membran ist flüssig, Proteine "schwimmen" darin</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="card card-blue">
+            <h3>Phospholipid-Doppelschicht</h3>
+            <ul>
+                <li><strong>Kopf</strong>: hydrophil (wasserliebend) — zeigt nach außen</li>
+                <li><strong>Schwanz</strong>: hydrophob (wasserabweisend) — zeigt nach innen</li>
+                <li>Bildet eine <strong>Barriere</strong> für wasserlösliche Stoffe</li>
+                <li>"Fluid" = Die Lipide bewegen sich seitlich</li>
+            </ul>
+        </div>
+        <div class="card card-purple">
+            <h3>Membranproteine</h3>
+            <ul>
+                <li><strong>Integrale Proteine</strong> — durchspannen die ganze Membran (z.B. Kanäle, Carrier)</li>
+                <li><strong>Periphere Proteine</strong> — sitzen auf der Oberfläche</li>
+                <li>Funktionen: Transport, Signalempfang, Enzymaktivität, Zell-Zell-Erkennung</li>
+            </ul>
+        </div>
+        <div class="card card-green">
+            <h3>Weitere Bestandteile</h3>
+            <ul>
+                <li><strong>Cholesterin</strong> — stabilisiert die Membranfluidität</li>
+                <li><strong>Glykokalix</strong> — Zuckerketten auf der Außenseite (Erkennungssignale)</li>
+                <li><strong>Glykolipide & Glykoproteine</strong> — für Zell-Zell-Kommunikation</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Transportarten durch die Membran</h2>
+    <table>
+        <tr>
+            <th>Transport</th>
+            <th>Energie?</th>
+            <th>Richtung</th>
+            <th>Beispiel</th>
+        </tr>
+        <tr>
+            <td><strong>Diffusion</strong> (passiv)</td>
+            <td>Nein</td>
+            <td>Mit dem Gefälle &#8595;</td>
+            <td>O₂, CO₂ durch die Membran</td>
+        </tr>
+        <tr>
+            <td><strong>Osmose</strong> (passiv)</td>
+            <td>Nein</td>
+            <td>Wasser mit dem Gefälle</td>
+            <td>Wasser durch Aquaporine</td>
+        </tr>
+        <tr>
+            <td><strong>Erleichterte Diffusion</strong> (passiv)</td>
+            <td>Nein</td>
+            <td>Mit dem Gefälle, durch Proteine</td>
+            <td>Glucose durch GLUT-Transporter</td>
+        </tr>
+        <tr>
+            <td><strong>Aktiver Transport</strong></td>
+            <td><strong>Ja (ATP)</strong></td>
+            <td><strong>Gegen</strong> das Gefälle &#8593;</td>
+            <td>Na⁺/K⁺-Pumpe</td>
+        </tr>
+        <tr>
+            <td><strong>Endozytose / Exozytose</strong></td>
+            <td>Ja (ATP)</td>
+            <td>Große Partikel rein/raus</td>
+            <td>Fresszellen nehmen Bakterien auf</td>
+        </tr>
+    </table>
+
+    <div class="highlight-box">
+        <h3>Merke: Was kommt einfach durch die Lipid-Doppelschicht?</h3>
+        <p><strong>Ja:</strong> Kleine, unpolare Moleküle (O₂, CO₂, N₂) und kleine polare Moleküle (H₂O — langsam, schneller durch Aquaporine)</p>
+        <p><strong>Nein:</strong> Große polare Moleküle (Glucose, Aminosäuren) und Ionen (Na⁺, K⁺, Cl⁻) → brauchen Transportproteine!</p>
+    </div>
+
+    <div class="quick-check">
+        <h3>&#10003; Quick Check — Biomembran</h3>
+        <p><strong>Frage 1:</strong> Warum ist die Membran "fluid" (flüssig)?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Die <strong>Phospholipide</strong> sind nicht starr fixiert — sie können sich <strong>seitlich innerhalb der Schicht bewegen</strong> (Lateraldiffusion). Das macht die Membran flexibel und ermöglicht Bewegung der eingelagerten Proteine.</div>
+        </div>
+        <br>
+        <p><strong>Frage 2:</strong> Warum können Ionen (z.B. Na⁺) nicht einfach durch die Membran diffundieren?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text">Ionen sind <strong>geladen</strong> (polar) und können die <strong>hydrophobe Innenschicht</strong> der Lipid-Doppelschicht nicht passieren. Sie brauchen <strong>Ionenkanäle</strong> oder <strong>Carrier-Proteine</strong>.</div>
+        </div>
+        <br>
+        <p><strong>Frage 3:</strong> Was ist der Unterschied zwischen aktivem und passivem Transport?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Antwort aufdecken</span>
+            <div class="answer-text"><strong>Passiv:</strong> Keine Energie nötig, Transport <strong>mit</strong> dem Konzentrationsgefälle (Diffusion, Osmose).<br><strong>Aktiv:</strong> Braucht <strong>ATP-Energie</strong>, Transport <strong>gegen</strong> das Konzentrationsgefälle (z.B. Na⁺/K⁺-Pumpe).</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-primary btn-lg" onclick="showSection('experimente')">Weiter: Experimente &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: EXPERIMENTE -->
+<!-- ============================================ -->
+<div class="section" id="sec-experimente">
+    <h1>Gedankenexperimente & Demos</h1>
+    <p class="subtitle">Versteht die Konzepte durch praktische Szenarien</p>
+
+    <div class="experiment-box">
+        <h3>&#129514; Experiment 1: Die schrumpelnde Kartoffel</h3>
+        <p><strong>Gedankenexperiment:</strong> Du legst drei Kartoffelstücke (gleich groß) in verschiedene Lösungen:</p>
+        <ul>
+            <li><strong>Glas A:</strong> Destilliertes Wasser</li>
+            <li><strong>Glas B:</strong> 0,9% Kochsalzlösung</li>
+            <li><strong>Glas C:</strong> 10% Kochsalzlösung</li>
+        </ul>
+        <p><strong>Diskutiert:</strong> Was passiert nach 30 Minuten mit jedem Kartoffelstück? Warum?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <ul>
+                    <li><strong>Glas A (dest. Wasser = hypotonisch):</strong> Wasser strömt in die Zellen → Kartoffel wird <strong>größer und fester</strong> (turgeszent)</li>
+                    <li><strong>Glas B (0,9% NaCl = isotonisch):</strong> Kein Netto-Wasserfluss → Kartoffel bleibt <strong>gleich</strong></li>
+                    <li><strong>Glas C (10% NaCl = hypertonisch):</strong> Wasser strömt aus den Zellen → Kartoffel wird <strong>kleiner, weich und schrumpelig</strong> (Plasmolyse)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="experiment-box">
+        <h3>&#129514; Experiment 2: Gummibärchen in Wasser</h3>
+        <p><strong>Gedankenexperiment (oder als Hausaufgabe!):</strong></p>
+        <p>Lege ein Gummibärchen über Nacht in ein Glas Wasser. Was passiert?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                Das Gummibärchen enthält viel Zucker (= hypertonisch gegenüber dem Wasser). Durch Osmose strömt <strong>Wasser in das Gummibärchen</strong>. Ergebnis: Es wird <strong>riesig</strong> (kann sich verdreifachen!). Die Gelatine wirkt wie eine semipermeable Membran.
+            </div>
+        </div>
+    </div>
+
+    <div class="thought-experiment">
+        <h3>&#129504; Gedankenexperiment 3: Leben im Meer</h3>
+        <p>Salzwasserfische leben in einer <strong>hypertonischen</strong> Umgebung. Süßwasserfische in einer <strong>hypotonischen</strong>.</p>
+        <p><strong>Diskutiert:</strong></p>
+        <ol>
+            <li>Welches Problem hat ein Salzwasserfisch? (Verliert er Wasser oder nimmt er auf?)</li>
+            <li>Welches Problem hat ein Süßwasserfisch?</li>
+            <li>Was passiert, wenn man einen Süßwasserfisch ins Meer setzt?</li>
+        </ol>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                <ol>
+                    <li><strong>Salzwasserfisch:</strong> Das Meerwasser ist hypertonisch → Wasser wird dem Fisch <strong>entzogen</strong>. Er muss ständig trinken und Salz aktiv über die Kiemen ausscheiden.</li>
+                    <li><strong>Süßwasserfisch:</strong> Das Süßwasser ist hypotonisch → Wasser <strong>strömt ständig ein</strong>. Er muss viel Urin produzieren und Salze aktiv aufnehmen.</li>
+                    <li>Ein Süßwasserfisch im Meer würde durch Osmose schnell <strong>Wasser verlieren</strong> und austrocknen — er kann das Salz nicht schnell genug ausscheiden.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="thought-experiment">
+        <h3>&#129504; Gedankenexperiment 4: Die Infusion</h3>
+        <p>Im Krankenhaus bekommt ein Patient eine Infusion direkt ins Blut.</p>
+        <p><strong>Frage:</strong> Warum benutzt man <strong>0,9% Kochsalzlösung</strong> und nicht einfach destilliertes Wasser?</p>
+        <div class="reveal-answer" onclick="this.classList.toggle('open')">
+            <span>Lösung aufdecken</span>
+            <div class="answer-text">
+                Destilliertes Wasser ist <strong>hypotonisch</strong> gegenüber den Blutzellen. Durch Osmose würde Wasser <strong>in die roten Blutzellen strömen</strong> → sie würden anschwellen und <strong>platzen</strong> (Hämolyse). Die 0,9% NaCl-Lösung ist <strong>isotonisch</strong> zum Blut → kein Netto-Wasserfluss → Zellen bleiben intakt.
+            </div>
+        </div>
+    </div>
+
+    <div class="experiment-box">
+        <h3>&#127891; Klassenaktivität: Membran-Rollenspiel (5 Min)</h3>
+        <p><strong>So geht's:</strong></p>
+        <ol>
+            <li>5 Schüler stellen sich in einer Reihe auf = <strong>die Membran</strong></li>
+            <li>Einige Schüler sind <strong>Wasser-Moleküle</strong> (dürfen durch die Lücken)</li>
+            <li>Andere sind <strong>Zucker-Moleküle</strong> (werden blockiert — zu groß!)</li>
+            <li>Auf einer Seite stehen viele "Zucker", auf der anderen wenige</li>
+            <li><strong>Beobachtet:</strong> Wohin fließt das "Wasser"?</li>
+        </ol>
+        <p><em>→ Das Wasser bewegt sich zur Seite mit mehr Zucker (= weniger freies Wasser)</em></p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-secondary btn-lg" onclick="showSection('videos')">Weiter: Videos &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: VIDEOS -->
+<!-- ============================================ -->
+<div class="section" id="sec-videos">
+    <h1>Erklärvideos</h1>
+    <p class="subtitle">Schaut euch diese kurzen Videos an, um die Konzepte visuell zu verstehen</p>
+
+    <h2>Diffusion</h2>
+    <div class="video-grid">
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/H2OEmkpb4as" title="Diffusion einfach erklärt" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Diffusion einfach erklärt</h4>
+                <p>TheSimpleBiology — Grundlagen der Diffusion</p>
+            </div>
+        </div>
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/R1OiPv1U22o" title="Diffusion und Osmose" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Diffusion & Osmose</h4>
+                <p>Biologie - simpleclub</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>Osmose</h2>
+    <div class="video-grid">
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/IWRFpBRqVoc" title="Osmose einfach erklärt" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Osmose einfach erklärt</h4>
+                <p>TheSimpleBiology</p>
+            </div>
+        </div>
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/L-osEl0bAWE" title="Plasmolyse" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Plasmolyse & Deplasmolyse</h4>
+                <p>Biologie - simpleclub</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>Biomembran</h2>
+    <div class="video-grid">
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/gLwGblkWaQs" title="Biomembran Aufbau" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Biomembran Aufbau</h4>
+                <p>TheSimpleBiology — Fluid-Mosaik-Modell</p>
+            </div>
+        </div>
+        <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/ziIGCe-6KSU" title="Membrantransport" allowfullscreen loading="lazy"></iframe>
+            <div class="video-info">
+                <h4>Aktiver & Passiver Transport</h4>
+                <p>Biologie - simpleclub</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-yellow" style="margin-top: 2rem;">
+        <h3>Tipp für die Klasse</h3>
+        <p>Schaut euch ein Video gemeinsam an und pausiert zwischendurch für Fragen. Das hilft beim Verstehen!</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-primary btn-lg" onclick="showSection('quiz')">Weiter: Quiz &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: EINZELQUIZ -->
+<!-- ============================================ -->
+<div class="section" id="sec-quiz">
+    <h1>Wissens-Quiz</h1>
+    <p class="subtitle">Teste dein Wissen — 15 Fragen zu Diffusion, Osmose & Biomembran</p>
+
+    <div class="quiz-container" id="single-quiz">
+        <div class="quiz-progress">
+            <span id="sq-progress-text">Frage 1 von 15</span>
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="sq-progress-bar" style="width:6.67%"></div></div>
+            <span id="sq-score">0 Punkte</span>
+        </div>
+        <div class="quiz-question" id="sq-question"></div>
+        <div id="sq-options"></div>
+        <div class="quiz-feedback" id="sq-feedback"></div>
+        <div style="text-align: center; margin-top: 1rem;">
+            <button class="btn btn-primary" id="sq-next" onclick="nextSingleQuestion()" style="display:none;">Nächste Frage &rarr;</button>
+        </div>
+    </div>
+    <div id="sq-result" style="display:none;"></div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-secondary btn-lg" onclick="showSection('teamquiz')">Weiter: Team-Quiz &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: TEAM QUIZ -->
+<!-- ============================================ -->
+<div class="section" id="sec-teamquiz">
+    <h1>Team-Quiz Battle!</h1>
+    <p class="subtitle">Tretet in Teams gegeneinander an — wer weiß am meisten?</p>
+
+    <div id="team-setup-area">
+        <div class="card">
+            <h3>Teams einrichten</h3>
+            <p>Wie viele Teams spielen?</p>
+            <div style="display: flex; gap: 0.75rem; margin: 1rem 0;">
+                <button class="btn btn-primary" onclick="setupTeams(2)">2 Teams</button>
+                <button class="btn btn-secondary" onclick="setupTeams(3)">3 Teams</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="team-game-area" style="display:none;">
+        <div class="team-setup" id="team-scores"></div>
+
+        <div class="quiz-container" id="team-quiz">
+            <div class="quiz-progress">
+                <span id="tq-progress-text">Frage 1 von 10</span>
+                <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="tq-progress-bar" style="width:10%"></div></div>
+            </div>
+            <div id="tq-current-team" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; padding: 0.5rem 1rem; border-radius: 8px; text-align: center; color: white;"></div>
+            <div class="quiz-question" id="tq-question"></div>
+            <div id="tq-options"></div>
+            <div class="quiz-feedback" id="tq-feedback"></div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn btn-primary" id="tq-next" onclick="nextTeamQuestion()" style="display:none;">Nächste Frage &rarr;</button>
+            </div>
+        </div>
+        <div id="tq-result" style="display:none;"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: ZUORDNUNGSSPIEL -->
+<!-- ============================================ -->
+<div class="section" id="sec-zuordnung">
+    <h1>Zuordnungsspiel</h1>
+    <p class="subtitle">Ziehe die Begriffe in die richtige Kategorie!</p>
+
+    <div class="card" id="drag-game">
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;" id="drag-items">
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div class="drop-zone" data-category="diffusion" style="min-height: 200px; border: 2px dashed var(--primary); border-radius: 12px; padding: 1rem; background: #eff6ff;">
+                <h3 style="color: var(--primary); text-align: center; margin-top: 0;">Diffusion</h3>
+                <div class="dropped-items"></div>
+            </div>
+            <div class="drop-zone" data-category="osmose" style="min-height: 200px; border: 2px dashed var(--secondary); border-radius: 12px; padding: 1rem; background: #f5f3ff;">
+                <h3 style="color: var(--secondary); text-align: center; margin-top: 0;">Osmose</h3>
+                <div class="dropped-items"></div>
+            </div>
+            <div class="drop-zone" data-category="aktiv" style="min-height: 200px; border: 2px dashed var(--accent); border-radius: 12px; padding: 1rem; background: #ecfdf5;">
+                <h3 style="color: var(--accent); text-align: center; margin-top: 0;">Aktiver Transport</h3>
+                <div class="dropped-items"></div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="checkDragGame()">Antworten prüfen</button>
+            <button class="btn btn-outline" onclick="resetDragGame()">Zurücksetzen</button>
+        </div>
+        <div id="drag-feedback" style="margin-top: 1rem;"></div>
+    </div>
+
+    <h2 style="margin-top: 3rem;">Begriffe-Memory</h2>
+    <p>Klicke auf zwei Karten, um ein Paar zu finden: Begriff + Definition</p>
+    <div id="memory-game" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin: 1.5rem 0;"></div>
+    <div style="text-align: center;">
+        <p id="memory-status" style="font-weight: 600; font-size: 1.1rem;"></p>
+        <button class="btn btn-outline" onclick="initMemoryGame()">Neues Spiel</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-secondary btn-lg" onclick="showSection('lueckentext')">Weiter: Lückentext &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: LÜCKENTEXT -->
+<!-- ============================================ -->
+<div class="section" id="sec-lueckentext">
+    <h1>Lückentext</h1>
+    <p class="subtitle">Fülle die Lücken mit den richtigen Begriffen aus!</p>
+
+    <div class="card card-blue">
+        <h3>Text 1: Diffusion</h3>
+        <p>Bei der <input type="text" class="gap-input" data-answer="Diffusion" placeholder="___________" size="12"> bewegen sich Teilchen vom Ort
+        <input type="text" class="gap-input" data-answer="höherer" placeholder="___________" size="12"> Konzentration zum Ort
+        <input type="text" class="gap-input" data-answer="niedrigerer" placeholder="___________" size="12"> Konzentration.
+        Dieser Vorgang ist <input type="text" class="gap-input" data-answer="passiv" placeholder="___________" size="10"> und benötigt keine
+        <input type="text" class="gap-input" data-answer="Energie" placeholder="___________" size="10">. Die Ursache ist die
+        <input type="text" class="gap-input" data-answer="Brown'sche" placeholder="___________" size="12"> Molekularbewegung.</p>
+    </div>
+
+    <div class="card card-purple">
+        <h3>Text 2: Osmose</h3>
+        <p><input type="text" class="gap-input" data-answer="Osmose" placeholder="___________" size="10"> ist die Diffusion von
+        <input type="text" class="gap-input" data-answer="Wasser" placeholder="___________" size="10"> durch eine
+        <input type="text" class="gap-input" data-answer="semipermeable" placeholder="___________" size="14"> Membran.
+        Das Wasser wandert von der <input type="text" class="gap-input" data-answer="hypotonischen" placeholder="___________" size="14"> zur
+        <input type="text" class="gap-input" data-answer="hypertonischen" placeholder="___________" size="14"> Seite.
+        Wenn eine Pflanzenzelle in einer hypertonischen Lösung Wasser verliert, nennt man das
+        <input type="text" class="gap-input" data-answer="Plasmolyse" placeholder="___________" size="12">.</p>
+    </div>
+
+    <div class="card card-green">
+        <h3>Text 3: Biomembran</h3>
+        <p>Die Biomembran besteht aus einer <input type="text" class="gap-input" data-answer="Phospholipid" placeholder="___________" size="14">-Doppelschicht.
+        Der Kopf der Phospholipide ist <input type="text" class="gap-input" data-answer="hydrophil" placeholder="___________" size="12">,
+        die Schwänze sind <input type="text" class="gap-input" data-answer="hydrophob" placeholder="___________" size="12">.
+        Das Modell, das den Aufbau beschreibt, heißt
+        <input type="text" class="gap-input" data-answer="Fluid-Mosaik-Modell" placeholder="___________" size="18">.
+        Transport <strong>gegen</strong> das Konzentrationsgefälle braucht
+        <input type="text" class="gap-input" data-answer="ATP" placeholder="___________" size="6"> und heißt
+        <input type="text" class="gap-input" data-answer="aktiver Transport" placeholder="___________" size="16">.</p>
+    </div>
+
+    <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f1f5f9; border-radius: 8px; font-size: 0.85rem;">
+        <strong>Wortbank:</strong> Diffusion, höherer, niedrigerer, passiv, Energie, Brown'sche, Osmose, Wasser, semipermeable, hypotonischen, hypertonischen, Plasmolyse, Phospholipid, hydrophil, hydrophob, Fluid-Mosaik-Modell, ATP, aktiver Transport
+    </div>
+
+    <div style="text-align: center; margin: 1.5rem 0;">
+        <button class="btn btn-primary btn-lg" onclick="checkGaps()">Antworten prüfen</button>
+        <button class="btn btn-outline btn-lg" onclick="resetGaps()">Zurücksetzen</button>
+    </div>
+    <div id="gap-result" style="text-align: center; font-size: 1.2rem; font-weight: 600;"></div>
+
+    <h2 style="margin-top: 3rem;">Richtig oder Falsch?</h2>
+    <div id="true-false-game"></div>
+    <div style="text-align: center; margin-top: 1rem;">
+        <button class="btn btn-primary" onclick="checkTrueFalse()">Auswerten</button>
+        <span id="tf-result" style="margin-left: 1rem; font-weight: 600;"></span>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-accent btn-lg" onclick="showSection('zusammenfassung')">Weiter: Zusammenfassung &rarr;</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION: ZUSAMMENFASSUNG -->
+<!-- ============================================ -->
+<div class="section" id="sec-zusammenfassung">
+    <h1>Zusammenfassung</h1>
+    <p class="subtitle">Alles Wichtige auf einen Blick</p>
+
+    <div class="card card-blue">
+        <h2 style="margin-top: 0; border: none; padding: 0;">Diffusion</h2>
+        <ul>
+            <li>Passive Verteilung von Teilchen vom Ort höherer → niedrigerer Konzentration</li>
+            <li>Keine Energie nötig (Brown'sche Molekularbewegung)</li>
+            <li>Schneller bei: hoher Temperatur, kleinen Teilchen, großem Konzentrationsgefälle</li>
+            <li>Beispiele: Tinte im Wasser, Gasaustausch in der Lunge, Parfüm im Raum</li>
+        </ul>
+    </div>
+
+    <div class="card card-purple">
+        <h2 style="margin-top: 0; border: none; padding: 0;">Osmose</h2>
+        <ul>
+            <li>Spezialfall der Diffusion: <strong>Wasser</strong> wandert durch eine <strong>semipermeable Membran</strong></li>
+            <li>Von hypotonisch (wenig Teilchen) → hypertonisch (viele Teilchen)</li>
+            <li><strong>Hypotonisch:</strong> Zelle quillt auf (Pflanze: turgeszent / Tier: Lyse)</li>
+            <li><strong>Isotonisch:</strong> Gleichgewicht — kein Netto-Wasserfluss</li>
+            <li><strong>Hypertonisch:</strong> Zelle schrumpft (Pflanze: Plasmolyse / Tier: Krenation)</li>
+            <li>Turgor = Innendruck in Pflanzenzellen → hält die Pflanze stabil</li>
+        </ul>
+    </div>
+
+    <div class="card card-green">
+        <h2 style="margin-top: 0; border: none; padding: 0;">Biomembran</h2>
+        <ul>
+            <li>Aufbau: <strong>Phospholipid-Doppelschicht</strong> + eingelagerte Proteine</li>
+            <li><strong>Fluid-Mosaik-Modell</strong> (Singer & Nicolson, 1972)</li>
+            <li>Phospholipide: hydrophiler Kopf + hydrophobe Schwänze</li>
+            <li>Membranproteine: integral (durchspannend) oder peripher (aufliegend)</li>
+            <li>Cholesterin stabilisiert die Fluidität</li>
+            <li>Transport: passiv (Diffusion, Osmose, erleichterte Diffusion) vs. aktiv (ATP nötig)</li>
+            <li>Kleine unpolare Moleküle kommen durch, Ionen und große Moleküle brauchen Proteine</li>
+        </ul>
+    </div>
+
+    <h2>Vergleichstabelle</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>Diffusion</th>
+            <th>Osmose</th>
+            <th>Aktiver Transport</th>
+        </tr>
+        <tr>
+            <td><strong>Was bewegt sich?</strong></td>
+            <td>Alle Teilchen</td>
+            <td>Nur Wasser</td>
+            <td>Spezifische Stoffe</td>
+        </tr>
+        <tr>
+            <td><strong>Richtung?</strong></td>
+            <td>Mit dem Gefälle</td>
+            <td>Mit dem Gefälle</td>
+            <td>Gegen das Gefälle</td>
+        </tr>
+        <tr>
+            <td><strong>Energie?</strong></td>
+            <td>Nein (passiv)</td>
+            <td>Nein (passiv)</td>
+            <td>Ja (ATP)</td>
+        </tr>
+        <tr>
+            <td><strong>Membran nötig?</strong></td>
+            <td>Nein</td>
+            <td>Ja (semipermeabel)</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td><strong>Beispiel</strong></td>
+            <td>Parfüm im Raum</td>
+            <td>Kirschen im Regen</td>
+            <td>Na⁺/K⁺-Pumpe</td>
+        </tr>
+    </table>
+
+    <div class="highlight-box" style="margin-top: 2rem;">
+        <h3>Die drei goldenen Regeln</h3>
+        <ol>
+            <li><strong>Teilchen wollen sich gleichmäßig verteilen</strong> — das ist Diffusion</li>
+            <li><strong>Wasser folgt den gelösten Stoffen</strong> — "Wasser geht dahin, wo Teilchen sind" = Osmose</li>
+            <li><strong>Die Membran entscheidet, wer durch darf</strong> — Selektive Permeabilität</li>
+        </ol>
+    </div>
+
+    <div class="card card-yellow" style="margin-top: 2rem;">
+        <h3>Für die nächste Stunde vorbereiten</h3>
+        <ul>
+            <li>Wiederholt die drei Transportarten (passiv vs. aktiv)</li>
+            <li>Optional: Gummibärchen-Experiment zuhause ausprobieren</li>
+            <li>Merkt euch: hypotonisch, isotonisch, hypertonisch</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================ -->
+<script>
+// ---- NAVIGATION ----
+function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('sec-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ---- DIFFUSION ANIMATION ----
+let diffusionAnim = null;
+let diffusionParticles = [];
+
+function initDiffusionParticles() {
+    diffusionParticles = [];
+    for (let i = 0; i < 80; i++) {
+        diffusionParticles.push({
+            x: 50 + Math.random() * 150,
+            y: 30 + Math.random() * 240,
+            vx: 0,
+            vy: 0,
+            radius: 5 + Math.random() * 3,
+            color: ['#3b82f6', '#ef4444', '#22c55e', '#f59e0b'][Math.floor(Math.random() * 4)]
+        });
+    }
+}
+
+function startDiffusion() {
+    if (diffusionAnim) return;
+    const canvas = document.getElementById('diffusionCanvas');
+    const ctx = canvas.getContext('2d');
+
+    if (diffusionParticles.length === 0) initDiffusionParticles();
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Divider line
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Labels
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Hohe Konzentration', canvas.width * 0.25, 20);
+        ctx.fillText('Niedrige Konzentration', canvas.width * 0.75, 20);
+
+        for (let p of diffusionParticles) {
+            p.vx += (Math.random() - 0.47) * 1.2;
+            p.vy += (Math.random() - 0.5) * 1.2;
+            p.vx *= 0.95;
+            p.vy *= 0.95;
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < p.radius) { p.x = p.radius; p.vx *= -0.5; }
+            if (p.x > canvas.width - p.radius) { p.x = canvas.width - p.radius; p.vx *= -0.5; }
+            if (p.y < p.radius) { p.y = p.radius; p.vy *= -0.5; }
+            if (p.y > canvas.height - p.radius) { p.y = canvas.height - p.radius; p.vy *= -0.5; }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.stroke();
+        }
+
+        diffusionAnim = requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function resetDiffusion() {
+    if (diffusionAnim) {
+        cancelAnimationFrame(diffusionAnim);
+        diffusionAnim = null;
+    }
+    initDiffusionParticles();
+    const canvas = document.getElementById('diffusionCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw initial state
+    for (let p of diffusionParticles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+    }
+}
+
+// ---- MEMBRANE ANIMATION ----
+function drawMembrane() {
+    const canvas = document.getElementById('membraneCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const memY = h / 2;
+    const lipidGap = 20;
+    const headR = 7;
+    const tailLen = 25;
+
+    // Draw phospholipid bilayer
+    for (let x = 30; x < w - 30; x += lipidGap) {
+        let offset = Math.sin(Date.now() / 1000 + x * 0.05) * 3;
+
+        // Upper layer (heads face up)
+        ctx.beginPath();
+        ctx.arc(x + offset, memY - tailLen - headR, headR, 0, Math.PI * 2);
+        ctx.fillStyle = '#3b82f6';
+        ctx.fill();
+        // Tails
+        ctx.beginPath();
+        ctx.moveTo(x + offset - 2, memY - tailLen);
+        ctx.lineTo(x + offset - 4, memY - 2);
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + offset + 2, memY - tailLen);
+        ctx.lineTo(x + offset + 4, memY - 2);
+        ctx.stroke();
+
+        // Lower layer (heads face down)
+        ctx.beginPath();
+        ctx.arc(x + offset, memY + tailLen + headR, headR, 0, Math.PI * 2);
+        ctx.fillStyle = '#3b82f6';
+        ctx.fill();
+        // Tails
+        ctx.beginPath();
+        ctx.moveTo(x + offset - 2, memY + tailLen);
+        ctx.lineTo(x + offset - 4, memY + 2);
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + offset + 2, memY + tailLen);
+        ctx.lineTo(x + offset + 4, memY + 2);
+        ctx.stroke();
+    }
+
+    // Draw integral protein (channel)
+    let protX = w * 0.35 + Math.sin(Date.now() / 2000) * 15;
+    ctx.fillStyle = '#8b5cf6';
+    ctx.beginPath();
+    ctx.ellipse(protX, memY, 18, tailLen + headR + 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.ellipse(protX, memY, 6, tailLen + headR + 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Kanal', protX, memY + 4);
+
+    // Draw another protein (carrier)
+    let prot2X = w * 0.65 + Math.sin(Date.now() / 1800 + 1) * 12;
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.ellipse(prot2X, memY, 22, tailLen + headR + 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('Carrier', prot2X, memY + 4);
+
+    // Cholesterol
+    let cholX = w * 0.5;
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.ellipse(cholX, memY - 10, 8, 12, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Labels
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Extrazellulärer Raum', 30, 25);
+    ctx.fillText('Zytoplasma (innen)', 30, h - 15);
+
+    // Legend
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#3b82f6';
+    ctx.beginPath(); ctx.arc(w - 170, h - 50, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('Phospholipid-Kopf', w - 30, h - 46);
+
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillRect(w - 175, h - 35, 10, 3);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('Fettsäure-Schwanz', w - 30, h - 30);
+
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath(); ctx.arc(w - 170, h - 18, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('Cholesterin', w - 30, h - 14);
+
+    requestAnimationFrame(drawMembrane);
+}
+
+// Start membrane animation when section is shown
+setTimeout(drawMembrane, 100);
+
+// ---- SINGLE QUIZ ----
+const singleQuizQuestions = [
+    {
+        q: "Was ist Diffusion?",
+        options: [
+            "Transport von Teilchen mit Energieverbrauch",
+            "Passive Verteilung von Teilchen entlang des Konzentrationsgefälles",
+            "Wasseraufnahme durch die Zellwand",
+            "Aktiver Transport gegen das Gefälle"
+        ],
+        correct: 1,
+        explanation: "Diffusion ist die passive Verteilung von Teilchen vom Ort höherer zum Ort niedrigerer Konzentration — ohne Energieverbrauch."
+    },
+    {
+        q: "Welcher Faktor beschleunigt die Diffusion NICHT?",
+        options: [
+            "Höhere Temperatur",
+            "Größeres Konzentrationsgefälle",
+            "Größere Teilchen",
+            "Kleinere Teilchen"
+        ],
+        correct: 2,
+        explanation: "Größere Teilchen bewegen sich langsamer und diffundieren daher langsamer, nicht schneller."
+    },
+    {
+        q: "Was ist Osmose?",
+        options: [
+            "Diffusion von Zucker durch eine Membran",
+            "Aktiver Transport von Wasser",
+            "Diffusion von Wasser durch eine semipermeable Membran",
+            "Verdunstung von Wasser"
+        ],
+        correct: 2,
+        explanation: "Osmose ist ein Spezialfall der Diffusion: Wasser wandert durch eine semipermeable Membran entlang des Konzentrationsgefälles."
+    },
+    {
+        q: "In welche Richtung wandert Wasser bei der Osmose?",
+        options: [
+            "Von hypertonisch nach hypotonisch",
+            "Von hypotonisch nach hypertonisch",
+            "Immer nach links",
+            "Gegen das Konzentrationsgefälle"
+        ],
+        correct: 1,
+        explanation: "Wasser wandert von der hypotonischen Seite (wenig gelöste Stoffe = viel freies Wasser) zur hypertonischen Seite (viele gelöste Stoffe = wenig freies Wasser)."
+    },
+    {
+        q: "Was passiert mit einer Tierzelle in hypotonischer Lösung?",
+        options: [
+            "Sie schrumpft",
+            "Sie bleibt gleich",
+            "Sie quillt auf und kann platzen",
+            "Sie teilt sich"
+        ],
+        correct: 2,
+        explanation: "In hypotonischer Lösung strömt Wasser in die Zelle. Da Tierzellen keine Zellwand haben, können sie platzen (Lyse)."
+    },
+    {
+        q: "Was ist Plasmolyse?",
+        options: [
+            "Das Platzen einer Zelle",
+            "Die Ablösung der Zellmembran von der Zellwand bei Pflanzenzellen",
+            "Die Teilung einer Zelle",
+            "Die Aufnahme von Nährstoffen"
+        ],
+        correct: 1,
+        explanation: "Plasmolyse tritt bei Pflanzenzellen in hypertonischer Lösung auf: Wasser strömt aus der Zelle und die Zellmembran löst sich von der Zellwand."
+    },
+    {
+        q: "Warum platzt eine Pflanzenzelle in destilliertem Wasser NICHT?",
+        options: [
+            "Weil sie kein Wasser aufnimmt",
+            "Weil die Zellwand den Druck standhält",
+            "Weil sie aktiv Wasser ausscheidet",
+            "Weil sie keine Membran hat"
+        ],
+        correct: 1,
+        explanation: "Die stabile Zellwand der Pflanzenzelle verhindert das Platzen. Die Zelle wird turgeszent (prall) — der Turgor drückt gegen die Zellwand."
+    },
+    {
+        q: "Welches Modell beschreibt den Aufbau der Biomembran?",
+        options: [
+            "Schlüssel-Schloss-Modell",
+            "Fluid-Mosaik-Modell",
+            "Teilchenmodell",
+            "Bohr'sches Atommodell"
+        ],
+        correct: 1,
+        explanation: "Das Fluid-Mosaik-Modell von Singer und Nicolson (1972) beschreibt die Biomembran als flüssige Lipid-Doppelschicht mit eingelagerten Proteinen."
+    },
+    {
+        q: "Was ist die Hauptfunktion der Phospholipid-Doppelschicht?",
+        options: [
+            "Energiegewinnung",
+            "Selektive Barriere für die Zelle",
+            "DNA-Speicherung",
+            "Proteinsynthese"
+        ],
+        correct: 1,
+        explanation: "Die Phospholipid-Doppelschicht bildet eine selektive Barriere: Kleine unpolare Moleküle können hindurch, große polare Moleküle und Ionen nicht."
+    },
+    {
+        q: "Warum haben Phospholipide einen hydrophilen Kopf und hydrophobe Schwänze?",
+        options: [
+            "Damit sie sich in Wasser auflösen",
+            "Damit sie eine stabile Doppelschicht in wässriger Umgebung bilden",
+            "Damit sie Energie speichern",
+            "Damit sie DNA binden"
+        ],
+        correct: 1,
+        explanation: "Die amphiphile Natur (teils hydrophil, teils hydrophob) ermöglicht die spontane Bildung einer stabilen Doppelschicht in wässriger Umgebung."
+    },
+    {
+        q: "Was braucht der aktive Transport, was der passive nicht braucht?",
+        options: [
+            "Wasser",
+            "Eine Membran",
+            "ATP (Energie)",
+            "Sauerstoff"
+        ],
+        correct: 2,
+        explanation: "Aktiver Transport verbraucht ATP-Energie, um Stoffe GEGEN das Konzentrationsgefälle zu transportieren. Passiver Transport (Diffusion, Osmose) braucht keine Energie."
+    },
+    {
+        q: "Warum bekommt man im Krankenhaus 0,9% NaCl-Lösung und nicht reines Wasser?",
+        options: [
+            "Weil Salz gesund ist",
+            "Weil reines Wasser die Blutzellen zum Platzen bringen würde",
+            "Weil Salzwasser billiger ist",
+            "Weil der Patient Salz braucht"
+        ],
+        correct: 1,
+        explanation: "0,9% NaCl ist isotonisch zum Blut. Reines Wasser wäre hypotonisch → Wasser würde in die roten Blutzellen strömen → Hämolyse (Platzen)."
+    },
+    {
+        q: "Welche Moleküle können DIREKT durch die Lipid-Doppelschicht diffundieren?",
+        options: [
+            "Glucose und Aminosäuren",
+            "Na⁺ und K⁺ Ionen",
+            "O₂ und CO₂",
+            "Proteine"
+        ],
+        correct: 2,
+        explanation: "O₂ und CO₂ sind kleine, unpolare Moleküle — sie können direkt durch die hydrophobe Innenschicht der Membran diffundieren."
+    },
+    {
+        q: "Was passiert bei Endozytose?",
+        options: [
+            "Die Zelle stößt Stoffe aus",
+            "Die Zelle nimmt große Partikel auf, indem sich die Membran einstülpt",
+            "Wasser fließt durch die Membran",
+            "Die Zelle teilt sich"
+        ],
+        correct: 1,
+        explanation: "Bei der Endozytose stülpt sich die Zellmembran ein und umschließt große Partikel (z.B. Bakterien bei Fresszellen). Das Gegenteil ist Exozytose."
+    },
+    {
+        q: "Warum ist die Biomembran 'fluid' (flüssig)?",
+        options: [
+            "Weil sie aus Wasser besteht",
+            "Weil die Phospholipide sich seitlich bewegen können",
+            "Weil sie ständig neu gebildet wird",
+            "Weil sie keine festen Bestandteile hat"
+        ],
+        correct: 1,
+        explanation: "Die Phospholipide sind nicht starr fixiert — sie können sich lateral (seitlich) innerhalb der Membranschicht bewegen, was die Membran flexibel und dynamisch macht."
+    }
+];
+
+let sqIndex = 0;
+let sqScore = 0;
+let sqAnswered = false;
+
+function renderSingleQuestion() {
+    const q = singleQuizQuestions[sqIndex];
+    document.getElementById('sq-question').textContent = q.q;
+    document.getElementById('sq-progress-text').textContent = `Frage ${sqIndex + 1} von ${singleQuizQuestions.length}`;
+    document.getElementById('sq-progress-bar').style.width = ((sqIndex + 1) / singleQuizQuestions.length * 100) + '%';
+    document.getElementById('sq-score').textContent = sqScore + ' Punkte';
+    document.getElementById('sq-feedback').className = 'quiz-feedback';
+    document.getElementById('sq-feedback').textContent = '';
+    document.getElementById('sq-next').style.display = 'none';
+    sqAnswered = false;
+
+    const optDiv = document.getElementById('sq-options');
+    optDiv.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerSingle(i);
+        optDiv.appendChild(btn);
+    });
+}
+
+function answerSingle(i) {
+    if (sqAnswered) return;
+    sqAnswered = true;
+    const q = singleQuizQuestions[sqIndex];
+    const options = document.querySelectorAll('#sq-options .quiz-option');
+    options.forEach(o => o.classList.add('disabled'));
+    options[q.correct].classList.add('correct');
+
+    const fb = document.getElementById('sq-feedback');
+    if (i === q.correct) {
+        sqScore++;
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = '✓ Richtig! ' + q.explanation;
+    } else {
+        options[i].classList.add('wrong');
+        fb.className = 'quiz-feedback wrong';
+        fb.textContent = '✗ Leider falsch. ' + q.explanation;
+    }
+    document.getElementById('sq-score').textContent = sqScore + ' Punkte';
+    document.getElementById('sq-next').style.display = 'inline-block';
+}
+
+function nextSingleQuestion() {
+    sqIndex++;
+    if (sqIndex >= singleQuizQuestions.length) {
+        showSingleResult();
+    } else {
+        renderSingleQuestion();
+    }
+}
+
+function showSingleResult() {
+    document.getElementById('single-quiz').style.display = 'none';
+    const pct = Math.round(sqScore / singleQuizQuestions.length * 100);
+    let grade = pct >= 90 ? '🏆 Hervorragend!' : pct >= 70 ? '👏 Gut gemacht!' : pct >= 50 ? '📚 Ganz okay — weiter üben!' : '💪 Noch mehr lernen!';
+    document.getElementById('sq-result').style.display = 'block';
+    document.getElementById('sq-result').innerHTML = `
+        <div class="card" style="text-align:center;">
+            <h2>${grade}</h2>
+            <p style="font-size:2rem; font-weight:700; color: var(--primary);">${sqScore} / ${singleQuizQuestions.length}</p>
+            <p style="font-size:1.2rem; color: var(--muted);">${pct}% richtig</p>
+            <button class="btn btn-primary" onclick="resetSingleQuiz()" style="margin-top:1rem;">Nochmal spielen</button>
+        </div>
+    `;
+}
+
+function resetSingleQuiz() {
+    sqIndex = 0;
+    sqScore = 0;
+    document.getElementById('single-quiz').style.display = 'block';
+    document.getElementById('sq-result').style.display = 'none';
+    renderSingleQuestion();
+}
+
+// Init single quiz
+renderSingleQuestion();
+
+// ---- TEAM QUIZ ----
+const teamQuizQuestions = [
+    { q: "Nenne den Fachbegriff: Teilchen bewegen sich vom Ort hoher zum Ort niedriger Konzentration.", options: ["Osmose", "Diffusion", "Endozytose", "Exozytose"], correct: 1, explanation: "Das ist Diffusion — die passive Verteilung von Teilchen." },
+    { q: "Was bedeutet 'semipermeabel'?", options: ["Vollständig durchlässig", "Halbdurchlässig", "Undurchlässig", "Elastisch"], correct: 1, explanation: "Semipermeabel = halbdurchlässig. Lässt manche Stoffe durch (z.B. Wasser), andere nicht." },
+    { q: "Was ist Turgor?", options: ["Zellteilung", "Der Innendruck einer Pflanzenzelle gegen die Zellwand", "Ein Protein in der Membran", "Der Außendruck auf eine Zelle"], correct: 1, explanation: "Turgor ist der Druck, den das Zellwasser von innen auf die Zellwand ausübt. Er hält die Pflanze stabil." },
+    { q: "Wo findet im menschlichen Körper ständig Diffusion statt?", options: ["Im Magen", "In den Lungenbläschen (Alveolen)", "In den Haaren", "In den Knochen"], correct: 1, explanation: "In den Alveolen diffundiert O₂ ins Blut und CO₂ wird abgegeben — Gas-Austausch durch Diffusion!" },
+    { q: "Was passiert mit Kirschen bei starkem Regen?", options: ["Sie werden süßer", "Sie platzen durch Osmose", "Sie schrumpfen", "Nichts"], correct: 1, explanation: "Regenwasser ist hypotonisch → Wasser strömt durch Osmose in die Kirsche → sie platzt." },
+    { q: "Welche Aussage über Cholesterin in der Membran stimmt?", options: ["Es macht die Membran starr", "Es stabilisiert die Fluidität der Membran", "Es transportiert Glucose", "Es ist ein Energiespeicher"], correct: 1, explanation: "Cholesterin reguliert die Fluidität: Bei Hitze macht es die Membran fester, bei Kälte flexibler." },
+    { q: "Erleichterte Diffusion braucht...", options: ["ATP-Energie", "Kanalproteine oder Carrier", "Einen Konzentrationsgradienten gegen", "Endozytose"], correct: 1, explanation: "Erleichterte Diffusion ist passiv (kein ATP), aber nutzt Membranproteine als Helfer für den Transport." },
+    { q: "Welches ist KEIN Beispiel für Osmose?", options: ["Parfüm verteilt sich im Raum", "Gummibärchen quillt in Wasser", "Salat welkt mit Dressing", "Blutzellen platzen in dest. Wasser"], correct: 0, explanation: "Parfüm im Raum = Diffusion (keine Membran beteiligt!). Die anderen sind alle Osmose-Beispiele." },
+    { q: "Die Na⁺/K⁺-Pumpe ist ein Beispiel für...", options: ["Passive Diffusion", "Osmose", "Aktiven Transport", "Erleichterte Diffusion"], correct: 2, explanation: "Die Na⁺/K⁺-Pumpe transportiert Ionen GEGEN das Konzentrationsgefälle und verbraucht dabei ATP." },
+    { q: "Wie heißt das Modell, das den Aufbau der Biomembran beschreibt?", options: ["Teilchenmodell", "Fluid-Mosaik-Modell", "Schalenmodell", "Doppelhelix-Modell"], correct: 1, explanation: "Das Fluid-Mosaik-Modell (Singer & Nicolson, 1972) beschreibt die Membran als flüssige Lipid-Doppelschicht mit Protein-Mosaik." }
+];
+
+let teamCount = 0;
+let teamScores = [];
+let tqIndex = 0;
+let tqCurrentTeam = 0;
+let tqAnswered = false;
+const teamColors = ['team-a', 'team-b', 'team-c'];
+const teamNames = ['Team Blau', 'Team Lila', 'Team Grün'];
+const teamBgColors = ['#2563eb', '#7c3aed', '#059669'];
+
+function setupTeams(n) {
+    teamCount = n;
+    teamScores = Array(n).fill(0);
+    tqIndex = 0;
+    tqCurrentTeam = 0;
+    tqAnswered = false;
+
+    document.getElementById('team-setup-area').style.display = 'none';
+    document.getElementById('team-game-area').style.display = 'block';
+    document.getElementById('tq-result').style.display = 'none';
+    document.getElementById('team-quiz').style.display = 'block';
+
+    renderTeamScores();
+    renderTeamQuestion();
+}
+
+function renderTeamScores() {
+    const div = document.getElementById('team-scores');
+    div.innerHTML = '';
+    for (let i = 0; i < teamCount; i++) {
+        div.innerHTML += `<div class="team-card ${teamColors[i]}">
+            <span class="team-name">${teamNames[i]}</span>
+            <span class="team-score">${teamScores[i]}</span>
+            <span class="team-name">Punkte</span>
+        </div>`;
+    }
+}
+
+function renderTeamQuestion() {
+    const q = teamQuizQuestions[tqIndex];
+    document.getElementById('tq-question').textContent = q.q;
+    document.getElementById('tq-progress-text').textContent = `Frage ${tqIndex + 1} von ${teamQuizQuestions.length}`;
+    document.getElementById('tq-progress-bar').style.width = ((tqIndex + 1) / teamQuizQuestions.length * 100) + '%';
+
+    const teamLabel = document.getElementById('tq-current-team');
+    teamLabel.textContent = `${teamNames[tqCurrentTeam]} ist dran!`;
+    teamLabel.style.background = teamBgColors[tqCurrentTeam];
+
+    document.getElementById('tq-feedback').className = 'quiz-feedback';
+    document.getElementById('tq-feedback').textContent = '';
+    document.getElementById('tq-next').style.display = 'none';
+    tqAnswered = false;
+
+    const optDiv = document.getElementById('tq-options');
+    optDiv.innerHTML = '';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerTeam(i);
+        optDiv.appendChild(btn);
+    });
+}
+
+function answerTeam(i) {
+    if (tqAnswered) return;
+    tqAnswered = true;
+    const q = teamQuizQuestions[tqIndex];
+    const options = document.querySelectorAll('#tq-options .quiz-option');
+    options.forEach(o => o.classList.add('disabled'));
+    options[q.correct].classList.add('correct');
+
+    const fb = document.getElementById('tq-feedback');
+    if (i === q.correct) {
+        teamScores[tqCurrentTeam]++;
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = `✓ Richtig! +1 Punkt für ${teamNames[tqCurrentTeam]}! — ${q.explanation}`;
+    } else {
+        options[i].classList.add('wrong');
+        fb.className = 'quiz-feedback wrong';
+        fb.textContent = `✗ Leider falsch! — ${q.explanation}`;
+    }
+    renderTeamScores();
+    document.getElementById('tq-next').style.display = 'inline-block';
+}
+
+function nextTeamQuestion() {
+    tqCurrentTeam = (tqCurrentTeam + 1) % teamCount;
+    tqIndex++;
+    if (tqIndex >= teamQuizQuestions.length) {
+        showTeamResult();
+    } else {
+        renderTeamQuestion();
+    }
+}
+
+function showTeamResult() {
+    document.getElementById('team-quiz').style.display = 'none';
+    const maxScore = Math.max(...teamScores);
+    const winners = teamScores.map((s, i) => s === maxScore ? teamNames[i] : null).filter(Boolean);
+
+    document.getElementById('tq-result').style.display = 'block';
+    document.getElementById('tq-result').innerHTML = `
+        <div class="card" style="text-align:center;">
+            <h2>🏆 ${winners.join(' & ')} ${winners.length > 1 ? 'gewinnen' : 'gewinnt'}!</h2>
+            ${teamScores.map((s, i) => `<p style="font-size:1.3rem;"><strong>${teamNames[i]}:</strong> ${s} Punkte</p>`).join('')}
+            <button class="btn btn-primary" onclick="resetTeamQuiz()" style="margin-top:1rem;">Nochmal spielen</button>
+            <button class="btn btn-outline" onclick="document.getElementById('team-setup-area').style.display='block'; document.getElementById('team-game-area').style.display='none';" style="margin-top:1rem;">Teams neu einrichten</button>
+        </div>
+    `;
+}
+
+function resetTeamQuiz() {
+    teamScores = Array(teamCount).fill(0);
+    tqIndex = 0;
+    tqCurrentTeam = 0;
+    document.getElementById('team-quiz').style.display = 'block';
+    document.getElementById('tq-result').style.display = 'none';
+    renderTeamScores();
+    renderTeamQuestion();
+}
+
+// Init diffusion
+initDiffusionParticles();
+resetDiffusion();
+
+// ---- DRAG & DROP ZUORDNUNG ----
+const dragData = [
+    { text: "Parfüm im Raum", category: "diffusion" },
+    { text: "O₂ durch Membran", category: "diffusion" },
+    { text: "Tinte im Wasser", category: "diffusion" },
+    { text: "Kirschen platzen im Regen", category: "osmose" },
+    { text: "Kartoffel in Salzwasser", category: "osmose" },
+    { text: "Gummibärchen quillt auf", category: "osmose" },
+    { text: "Wasser durch Aquaporine", category: "osmose" },
+    { text: "Na⁺/K⁺-Pumpe", category: "aktiv" },
+    { text: "Endozytose", category: "aktiv" },
+    { text: "Glucose gegen Gefälle", category: "aktiv" },
+    { text: "CO₂ in Alveolen", category: "diffusion" },
+    { text: "Fresszelle nimmt Bakterium auf", category: "aktiv" },
+];
+
+let draggedItem = null;
+
+function initDragGame() {
+    const container = document.getElementById('drag-items');
+    container.innerHTML = '';
+    const shuffled = [...dragData].sort(() => Math.random() - 0.5);
+    shuffled.forEach((item, i) => {
+        const el = document.createElement('span');
+        el.className = 'drag-item';
+        el.textContent = item.text;
+        el.draggable = true;
+        el.dataset.category = item.category;
+        el.dataset.index = i;
+        el.addEventListener('dragstart', (e) => {
+            draggedItem = el;
+            el.style.opacity = '0.5';
+        });
+        el.addEventListener('dragend', () => {
+            el.style.opacity = '1';
+        });
+        // Touch support
+        el.addEventListener('click', () => {
+            if (el.classList.contains('placed')) return;
+            document.querySelectorAll('.drag-item').forEach(d => d.style.outline = 'none');
+            el.style.outline = '3px solid var(--primary)';
+            draggedItem = el;
+        });
+        container.appendChild(el);
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.querySelector('.dropped-items').innerHTML = '';
+        zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            if (draggedItem) {
+                const clone = document.createElement('span');
+                clone.className = 'drag-item';
+                clone.textContent = draggedItem.textContent;
+                clone.dataset.category = draggedItem.dataset.category;
+                clone.style.cursor = 'pointer';
+                clone.onclick = () => { clone.remove(); draggedItem = null; document.querySelectorAll(`.drag-item[data-index="${draggedItem?.dataset.index}"]`).forEach(d => d.classList.remove('placed')); };
+                zone.querySelector('.dropped-items').appendChild(clone);
+                draggedItem.classList.add('placed');
+                draggedItem = null;
+            }
+        });
+        // Touch: click on zone to place
+        zone.addEventListener('click', (e) => {
+            if (e.target.classList.contains('drag-item')) return;
+            if (draggedItem && !draggedItem.classList.contains('placed')) {
+                const clone = document.createElement('span');
+                clone.className = 'drag-item';
+                clone.textContent = draggedItem.textContent;
+                clone.dataset.category = draggedItem.dataset.category;
+                zone.querySelector('.dropped-items').appendChild(clone);
+                draggedItem.classList.add('placed');
+                draggedItem.style.outline = 'none';
+                draggedItem = null;
+            }
+        });
+    });
+}
+
+function checkDragGame() {
+    let correct = 0, total = 0;
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        const cat = zone.dataset.category;
+        zone.querySelectorAll('.dropped-items .drag-item').forEach(item => {
+            total++;
+            if (item.dataset.category === cat) {
+                item.classList.add('correct-item');
+                item.classList.remove('wrong-item');
+                correct++;
+            } else {
+                item.classList.add('wrong-item');
+                item.classList.remove('correct-item');
+            }
+        });
+    });
+    const fb = document.getElementById('drag-feedback');
+    fb.innerHTML = `<div class="card ${correct === total && total > 0 ? 'card-green' : 'card-yellow'}" style="text-align:center;"><strong>${correct} von ${total} richtig!</strong> ${correct === total && total > 0 ? ' Perfekt!' : ' Probier die falschen nochmal.'}</div>`;
+}
+
+function resetDragGame() {
+    document.getElementById('drag-feedback').innerHTML = '';
+    initDragGame();
+}
+
+initDragGame();
+
+// ---- MEMORY GAME ----
+const memoryPairs = [
+    { term: "Diffusion", def: "Passive Verteilung entlang des Gefälles" },
+    { term: "Osmose", def: "Wasser durch semipermeable Membran" },
+    { term: "Plasmolyse", def: "Zellmembran löst sich von Zellwand" },
+    { term: "Turgor", def: "Innendruck gegen die Zellwand" },
+    { term: "Hypotonisch", def: "Außen weniger Teilchen als innen" },
+    { term: "Hypertonisch", def: "Außen mehr Teilchen als innen" },
+    { term: "ATP", def: "Energie für aktiven Transport" },
+    { term: "Aquaporin", def: "Wasserkanal in der Membran" },
+];
+
+let memoryCards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+let memoryLocked = false;
+
+function initMemoryGame() {
+    matchedPairs = 0;
+    flippedCards = [];
+    memoryLocked = false;
+    memoryCards = [];
+    memoryPairs.forEach((p, i) => {
+        memoryCards.push({ id: i * 2, pairId: i, text: p.term, type: 'term' });
+        memoryCards.push({ id: i * 2 + 1, pairId: i, text: p.def, type: 'def' });
+    });
+    memoryCards.sort(() => Math.random() - 0.5);
+    renderMemory();
+    document.getElementById('memory-status').textContent = `0 / ${memoryPairs.length} Paare gefunden`;
+}
+
+function renderMemory() {
+    const grid = document.getElementById('memory-game');
+    grid.innerHTML = '';
+    memoryCards.forEach(card => {
+        const el = document.createElement('div');
+        el.className = 'memory-card face-down';
+        el.textContent = '?';
+        el.dataset.id = card.id;
+        el.onclick = () => flipCard(card.id, el);
+        grid.appendChild(el);
+    });
+}
+
+function flipCard(id, el) {
+    if (memoryLocked) return;
+    if (flippedCards.length >= 2) return;
+    if (el.classList.contains('face-up') || el.classList.contains('matched')) return;
+
+    const card = memoryCards.find(c => c.id === id);
+    el.classList.remove('face-down');
+    el.classList.add('face-up');
+    el.textContent = card.text;
+    flippedCards.push({ card, el });
+
+    if (flippedCards.length === 2) {
+        memoryLocked = true;
+        const [a, b] = flippedCards;
+        if (a.card.pairId === b.card.pairId && a.card.id !== b.card.id) {
+            // Match!
+            setTimeout(() => {
+                a.el.classList.add('matched');
+                b.el.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('memory-status').textContent = `${matchedPairs} / ${memoryPairs.length} Paare gefunden` + (matchedPairs === memoryPairs.length ? ' — Geschafft!' : '');
+                flippedCards = [];
+                memoryLocked = false;
+            }, 500);
+        } else {
+            setTimeout(() => {
+                a.el.classList.remove('face-up');
+                a.el.classList.add('face-down');
+                a.el.textContent = '?';
+                b.el.classList.remove('face-up');
+                b.el.classList.add('face-down');
+                b.el.textContent = '?';
+                flippedCards = [];
+                memoryLocked = false;
+            }, 1000);
+        }
+    }
+}
+
+initMemoryGame();
+
+// ---- LÜCKENTEXT ----
+function checkGaps() {
+    const inputs = document.querySelectorAll('.gap-input');
+    let correct = 0;
+    inputs.forEach(input => {
+        const answer = input.dataset.answer.toLowerCase().trim();
+        const value = input.value.toLowerCase().trim();
+        if (value === answer || (answer.includes(' ') && value === answer.replace(/ /g, '')) || levenshtein(value, answer) <= 1) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+            correct++;
+        } else if (value.length > 0) {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+        }
+    });
+    document.getElementById('gap-result').textContent = `${correct} von ${inputs.length} richtig!`;
+    document.getElementById('gap-result').style.color = correct === inputs.length ? 'var(--success)' : 'var(--warning)';
+}
+
+function resetGaps() {
+    document.querySelectorAll('.gap-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('correct', 'wrong');
+    });
+    document.getElementById('gap-result').textContent = '';
+}
+
+function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    const dp = Array.from({length: m + 1}, () => Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++)
+        for (let j = 1; j <= n; j++)
+            dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(a[i-1]!==b[j-1]?1:0));
+    return dp[m][n];
+}
+
+// ---- RICHTIG ODER FALSCH ----
+const tfStatements = [
+    { text: "Diffusion benötigt ATP-Energie.", correct: false, explanation: "Falsch! Diffusion ist passiv und braucht keine Energie." },
+    { text: "Osmose ist ein Spezialfall der Diffusion.", correct: true, explanation: "Richtig! Osmose = Diffusion von Wasser durch eine semipermeable Membran." },
+    { text: "In einer hypertonischen Lösung quillt die Zelle auf.", correct: false, explanation: "Falsch! In hypertonischer Lösung verliert die Zelle Wasser und schrumpft." },
+    { text: "Phospholipide haben einen hydrophilen Kopf und hydrophobe Schwänze.", correct: true, explanation: "Richtig! Das ist die amphiphile Natur der Phospholipide." },
+    { text: "Cholesterin macht die Membran flüssiger.", correct: false, explanation: "Nicht ganz! Cholesterin stabilisiert — bei Hitze macht es fester, bei Kälte flexibler." },
+    { text: "Die Na⁺/K⁺-Pumpe ist ein Beispiel für passiven Transport.", correct: false, explanation: "Falsch! Die Na⁺/K⁺-Pumpe braucht ATP = aktiver Transport." },
+    { text: "Pflanzenzellen haben eine Zellwand, die das Platzen verhindert.", correct: true, explanation: "Richtig! Die Zellwand gibt Stabilität — die Zelle wird turgeszent, platzt aber nicht." },
+    { text: "O₂ und CO₂ brauchen Transportproteine, um durch die Membran zu gelangen.", correct: false, explanation: "Falsch! Kleine unpolare Moleküle wie O₂ und CO₂ diffundieren direkt durch die Lipid-Doppelschicht." },
+    { text: "Im Krankenhaus nutzt man 0,9% NaCl-Lösung, weil sie isotonisch zum Blut ist.", correct: true, explanation: "Richtig! Isotonisch = kein Netto-Wasserfluss = Blutzellen bleiben intakt." },
+    { text: "Beim Fluid-Mosaik-Modell sind die Phospholipide starr fixiert.", correct: false, explanation: "Falsch! 'Fluid' bedeutet, dass sich die Lipide seitlich bewegen können (Lateraldiffusion)." },
+];
+
+function initTrueFalse() {
+    const container = document.getElementById('true-false-game');
+    container.innerHTML = '';
+    tfStatements.forEach((stmt, i) => {
+        container.innerHTML += `
+            <div class="tf-item" id="tf-${i}">
+                <p>${i + 1}. ${stmt.text}</p>
+                <button class="tf-btn" onclick="selectTF(${i}, true, this)">Richtig</button>
+                <button class="tf-btn" onclick="selectTF(${i}, false, this)">Falsch</button>
+            </div>`;
+    });
+}
+
+function selectTF(i, value, btn) {
+    const item = document.getElementById(`tf-${i}`);
+    item.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('selected-true', 'selected-false'));
+    btn.classList.add(value ? 'selected-true' : 'selected-false');
+    item.dataset.answer = value;
+}
+
+function checkTrueFalse() {
+    let correct = 0;
+    tfStatements.forEach((stmt, i) => {
+        const item = document.getElementById(`tf-${i}`);
+        const answer = item.dataset.answer;
+        if (answer === undefined) return;
+        const userAnswer = answer === 'true';
+        item.classList.remove('correct-tf', 'wrong-tf');
+        if (userAnswer === stmt.correct) {
+            item.classList.add('correct-tf');
+            correct++;
+        } else {
+            item.classList.add('wrong-tf');
+        }
+    });
+    document.getElementById('tf-result').textContent = `${correct} / ${tfStatements.length} richtig!`;
+}
+
+initTrueFalse();
+</script>
+
+</body>
+</html>
